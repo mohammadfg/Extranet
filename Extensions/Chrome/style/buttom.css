@@ -1,0 +1,83 @@
+
+.box_button{
+  display: flex;
+
+}
+.buttom{
+  width: 82px;
+  height: 33px;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+}
+.title_button{
+  text-align: center;
+  font-weight: 60;
+  margin-top: 4.5px;
+  font-weight: bold;
+  background-color: #f3f3f3;
+  padding: 3px;
+  border-radius: 2px;
+  margin-right: -1px;
+
+}
+.checkbox{
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+  z-index: 3;
+}
+.layer{
+  border-radius: 3px;
+  height: 26px;
+  width: 32px;
+  background-color: #23a132;
+  position: relative;
+  top: -51px;
+  left: 2.5%;
+  transition: 0.3s ease all;
+}
+
+.checkbox:checked ~ .layer {
+  width: 45px;
+  transition: 0.3s ease all;
+  left:42.5%;
+  background-color: #f44336;
+  color: white;
+}
+.checkbox:checked + .lable_check {
+  color: black;
+}
+.checkbox:checked + .lable_check .mrg {
+  color: white;
+}
+.lable_check{
+  top: -31px;
+  font-weight: bold;
+  font-size: 12px;
+  position: relative;
+  display: flex;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 5px;
+  color: white;
+
+}
+.lable_check p {
+  margin: 0;
+}
+.lable_check .mrg{
+color: black;
+}
+.lable_check .mrg{
+  margin-left: 10px;
+}
+.fs-11{
+  font-size:11px;
+}
+.hidden{
+  visibility: hidden;
+}

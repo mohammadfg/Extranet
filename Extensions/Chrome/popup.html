@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="./style/home.css" />
+</head>
+
+<body>
+  <div class="AD">
+    <button id="close">X</button>
+    <img src="./icon/129.png" loading="lazy" alt="AD" />
+    <h3>ارتباط سیستم خود را برسی کنید</h3>
+    <p id="redirecAD">رفتن به صفحه موردنظر</p>
+  </div>
+
+  <div class="loading">
+    <img src="./icon/wait_32.gif" alt="Loading ...">
+  </div>
+
+  <div class="details"
+    style="display:none;animation: zoom-in 500ms;text-align: center;position: absolute;font-weight: bold;text-shadow: 0px 0px 6px black;direction: rtl;background-color: rgb(0 0 0 / 82%);z-index: 4;width: 100%;color: white;font-size: 15px;">
+  </div>
+
+  <div id="root">
+
+    <div class="checksite" id="fwNimclub">
+      <div class="checksite_style">
+        <input type="text" placeholder="تبدیل لینک دانلود به نیم بها" dir="ltr" id="link" />
+        <!--  <button type="button" id="nimclub">تایید</button> -->
+        <!--         <p>
+          قوانین : <br>
+          1️⃣ هرگونه فایل یا محتوا که خلاف قوانین کشور باشد اعم از ( پورنوگرافی ، خشونت و ... ) ممنوع میباشد ! <br>
+          2️⃣هر فایل یا محتوا می تواند تا حداکثر 3GB باشد ( اما پیشنهاد میشود حداکثر 700MB باشد تا دانلود شما قطع و یا
+          به مشکل
+          برنخورد )<br>
+          3️⃣ لینک های تولید شده نیم بها تا 3 ساعت فعال هستند<br>
+          4️⃣استفاده بیش از حد از منابع سرور به نحوی که دیگران از این خدمات منع شوند ممنوع است<br>
+          <br>
+          🎫 لطفا قوانین را به در طی زمان های مخلتف مطالعه فرمایید تا به مشکل برنخورید<br>
+          📌درصورت رعایت نکردن قوانین ( سرویس نیم بها ) برای شما غیرفعال خواهد شد<br>
+        </p> -->
+      </div>
+
+
+    </div>
+
+    <div class="vpn" id="fwVpn">
+      <p class="title">گذر از تحریم ها</p>
+
+      <div class="toggle">
+        <input type="checkbox" id="VPN" />
+        <label for="VPN"></label>
+      </div>
+
+
+
+      <div class="ipinfo">
+        <span class="listcountry"><img src="./icon/lightning.webp" /> سریع..</span>
+
+        <p>آیپی هم اکنون :</p>
+        <b id="ip">0.0.0.0</b>
+      </div>
+
+      <div class="listVpn">
+        <div><img src="./icon/lightning.webp" alt="Us"><span>سریع ترین</span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!--     <div class="vip" id="fwVip">
+      <div class="checksite_style">
+        <input type="text" placeholder="کد اشتراک خود را وارد کنید" dir="ltr" id="codevip"
+          value="عضو کاربران ویژه شوید ;D" />
+        <button type="button" id="nimclub">بزن بریم 😍</button>
+        <button type="button" id="detailsVip">چطوری ؟ 🤔</button>
+      </div>
+    </div> -->
+
+    <div class="alert">
+      <p>⚠️ به دلیل کاهش هزینه ها ( مالک پروکسی ها ما نیستیم ! )</p>
+      <img src="#" alt="AD">
+    </div>
+
+    <div class="tools">
+
+      <div class="box_button">
+        <p class="title_button" style="font-size: 9.5px">
+          نمایش سایت های داخلی همراه با ترافیک مصرفی
+        </p>
+
+        <div class="buttom">
+          <input class="checkbox" type="checkbox" id="site" />
+          <label class="lable_check">
+            <p>فعال</p>
+            <p class="mrg">غیرفعال</p>
+          </label>
+          <div class="layer"></div>
+        </div>
+
+      </div>
+
+      <div class="box_button">
+        <p class="title_button fs-11">برسی سایت های جعلی و پرداخلی</p>
+
+        <div class="buttom">
+          <input class="checkbox" type="checkbox" id="bank" />
+          <label class="lable_check">
+            <p>فعال</p>
+            <p class="mrg">غیرفعال</p>
+          </label>
+          <div class="layer"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div>
+      <p class="version">Version : 1.0.0</p>
+      <p class="version">T.me/Mohamaadfg</p>
+    </div>
+  </div>
+  <script type="module" src="./popup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "ExtraNet",
+  "version": "1.0.0",
+  "description": "Have fun bypassing the restrictions with an ExtraNet",
+  "author": "MohamadFg",
+  "manifest_version": 3,
+  "permissions": ["tabs", "proxy", "storage", "scripting"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "./icon/128.png",
+      "48": "./icon/48.png",
+      "32": "./icon/32.png",
+      "16": "./icon/16.png"
+    }
+  },
+  "icons": {
+    "128": "./icon/128.png",
+    "48": "./icon/48.png",
+    "32": "./icon/32.png",
+    "16": "./icon/16.png"
+  }
+}
