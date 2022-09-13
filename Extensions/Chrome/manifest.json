@@ -1,8 +1,8 @@
 {
   "name": "ExtraNet",
   "version": "1.0.0",
-  "description": "Have fun bypassing the restrictions with an ExtraNet",
-  "author": "MohamadFg",
+  "description": "An Iranian tool to bypass the country's restrictions",
+  "author": "MohamaadFg",
   "manifest_version": 3,
   "permissions": ["tabs", "proxy", "storage", "scripting"],
   "host_permissions": ["http://*/*", "https://*/*"],

@@ -1,11 +1,11 @@
-@keyframes translate-y {
+/* @keyframes translate-y {
   from {
     transform: translateY(100%);
   }
   to {
     transform: translateY(0%);
   }
-}
+} */
 .title {
   padding: 6px;
   color: #666;
@@ -14,6 +14,7 @@
 
 .toggle {
   position: relative;
+  font-weight: bold;
   top: 32%;
   left: 15%;
   transform: translate3d(-50%, -50%, 0);

@@ -4,12 +4,22 @@ function Elem(id) {
     return document.querySelector(id);
 }
 let VpnData = [], date = new Date();
-
 //----------- Start --------------
 // document.oncontextmenu = document.body.oncontextmenu = function () { return false; }
 
-// Get ip on open app
+//Check online
+if (!navigator.onLine) {
+    Elem(".AD img").src = "./icon/wait_32.gif";
+    Elem(".AD img").style.margin = "50% auto";
+    Elem(".AD img").style.width = "10%";
 
+    Elem("#close").style.visibility = 'hidden';
+    Elem("#redirecAD").style.visibility = 'hidden';
+
+    Elem(".AD").style.backgroundColor = '#fff';
+}
+
+// Get ip on open app
 async function checkIP() {
     let data = await URI("https://api.linkirani.ir/apiv1/client/current")
         .catch(() => ({ ip: "درحال برسی ..." }));
@@ -93,7 +103,7 @@ SendMessage({ mesage: "check" }, (data) => {
 
                         time -= 1;
 
-                    }, 300);
+                    }, 1000);
 
                 } else { AD(undefined, "home"); }
 
@@ -105,7 +115,11 @@ SendMessage({ mesage: "check" }, (data) => {
                     };
                 } else { AD("banner") }
 
-            } else { AD("banner", "home"); }
+            } else { 
+                 //----- after version 1 delete
+                 Elem('body').style.height = "420px";
+                 //------------
+                if(navigator.onLine){AD("banner", "home")} }
 
             //Show update
             if (up.top != 0 && up.height != 0) {
@@ -168,6 +182,9 @@ Elem("#VPN").onclick = function () {
 };
 
 //------ Advertising
+/* Elem(".AD img").onerror = function () {
+  //  AD(undefined,"home");
+    } */
 function AD(withbanner, withhome) {
     if (withbanner == "banner") {
         Elem(".alert img").style.visibility = 'hidden';
@@ -185,16 +202,9 @@ Elem("#close").onclick = function () {
     AD(undefined, "home");
 };
 
-Elem(".AD img").onerror = function () {
-    Elem(".AD img").src = "./icon/Network.gif";
-
-    Elem("#close").style.visibility = 'hidden';
-    Elem("#redirecAD").style.visibility = 'hidden';
-
-    Elem(".AD").style.backgroundColor = '#fff';
 
 
-}
+
 
 //-------input VIP
 /* Elem(".vip input").onclick = function () {
@@ -217,11 +227,6 @@ Elem(".listVpn *").onclick = function (e) {
 
 }
 
-
-Elem("#link").onclick = function () {
-    chrome.tabs.create({ url: "https://linknim.ir/" });
-
-};
 // Convert Link to (1/2) trafic
 /* Elem("#nimclub").onclick = function () {
     chrome.tabs.create({ url: "https://linknim.ir/" });
