@@ -5,7 +5,6 @@ function Elem(id) {
 }
 let VpnData = [], date = new Date();
 //----------- Start --------------
-// document.oncontextmenu = document.body.oncontextmenu = function () { return false; }
 
 //Check online
 if (!navigator.onLine) {
@@ -82,7 +81,6 @@ SendMessage({ mesage: "check" }, (data) => {
                         chrome.tabs.create({ url: random(home).src });
                     };
 
-                    //----- after version 1 delete
                     Elem('body').style.height = "420px";
 
                     let time = 5;
@@ -116,7 +114,6 @@ SendMessage({ mesage: "check" }, (data) => {
                 } else { AD("banner") }
 
             } else { 
-                 //----- after version 1 delete
                  Elem('body').style.height = "420px";
                  //------------
                 if(navigator.onLine){AD("banner", "home")} }
@@ -132,8 +129,6 @@ SendMessage({ mesage: "check" }, (data) => {
                 Elem(".details").innerText = up.text;
 
             }
-
-
         } else {
             Elem("#" + key).checked = !data[key];
         }
@@ -151,8 +146,7 @@ for (let i = 0; i < checkbox.length; i++) {
         }
     };
 }
-
-//---------------------------------------------------------------------------
+//---------------------------------VPN
 Elem("#VPN").onclick = function () {
     if (this.checked && VpnData[0].hasOwnProperty('host')) {
         let config = {
@@ -182,9 +176,6 @@ Elem("#VPN").onclick = function () {
 };
 
 //------ Advertising
-/* Elem(".AD img").onerror = function () {
-  //  AD(undefined,"home");
-    } */
 function AD(withbanner, withhome) {
     if (withbanner == "banner") {
         Elem(".alert img").style.visibility = 'hidden';
@@ -202,16 +193,6 @@ Elem("#close").onclick = function () {
     AD(undefined, "home");
 };
 
-
-
-
-
-//-------input VIP
-/* Elem(".vip input").onclick = function () {
-    console.log("ok")
-    this.value = "";
-}
- */
 //-------List Vpns
 Elem(".listcountry").onclick = function () {
     // Elem(".listVpn").style.display = "block";
@@ -226,12 +207,5 @@ Elem(".listVpn *").onclick = function (e) {
     e.target.parentElement.style.top = "100%";
 
 }
-
-// Convert Link to (1/2) trafic
-/* Elem("#nimclub").onclick = function () {
-    chrome.tabs.create({ url: "https://linknim.ir/" });
-
-}; */
-
 
 

@@ -6,12 +6,9 @@ const { runtime, tabs, proxy } = chrome;
 function CheckParts(back) {
   try {
      let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
-  //  let api = URI("./controls.json", undefined, undefined, undefined, "text");
 
     Promise.all([api, Storage()]).then(([data, local]) => {
           let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
-   //   let contorols = JSON.parse(data);
-
       // set Data in local for once
       let updStage;
       let nextRl = new Date().getTime() + 45 * 60 * 1000;
@@ -160,11 +157,6 @@ runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   return true;
 });
-
-//var manifestData = runtime.getManifest();
-//console.log(manifestData.version);
-
-// chrome.scripting.executeScript({ target: 0, files: "./components/injection.js" })
 
 runtime.onSuspend.addListener(() => {
   Icon('./icon/129.png')
