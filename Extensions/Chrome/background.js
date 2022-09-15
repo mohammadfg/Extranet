@@ -5,10 +5,11 @@ const { runtime, tabs, proxy } = chrome;
 
 function CheckParts(back) {
   try {
-     let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
+    let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
 
     Promise.all([api, Storage()]).then(([data, local]) => {
-          let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
+      let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
+
       // set Data in local for once
       let updStage;
       let nextRl = new Date().getTime() + 45 * 60 * 1000;
@@ -54,7 +55,7 @@ function CheckParts(back) {
         back(updStage);
       }
     });
-  } catch (e) {}
+  } catch (e) { }
 }
 
 runtime.onStartup.addListener(() => {
@@ -91,7 +92,7 @@ async function Handel_code(tabId, stage) {
         let flags = value.link.netloc.ipCountryCode;
 
         if (value.isRegistered) {
-          Icon(`./icon/flags/${flags}.png`, "0.5","green");
+          Icon(`./icon/flags/${flags}.png`, "0.5", "green");
         } else if (value.isInIran) {
           Icon(`./icon/flags/${flags}.png`, "X1");
         } else {
@@ -163,7 +164,7 @@ runtime.onSuspend.addListener(() => {
 });
 
 //-------Oninstall Message to user
-runtime.onInstalled.addListener(({reason}) => {
+runtime.onInstalled.addListener(({ reason }) => {
   if (reason === runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({
       url: 'whats-new.html'

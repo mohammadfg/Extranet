@@ -30,7 +30,7 @@ function validURL(value) {
 }
 function SendMessage(DataSend, calback) {
   runtime.sendMessage(runtime.id, DataSend, (result) => {
-    calback(result);
+    result && calback(result);
   })
 }
 

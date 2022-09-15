@@ -1,27 +1,32 @@
 import { Icon, SendMessage, Storage, URI } from "./module.js";
 
-function Elem(id) {
-    return document.querySelector(id);
+function Elem(SelectorId, Htmlproperty) {
+    let querySelector = document.querySelectorAll(SelectorId);
+    for (let iterator of querySelector) {
+        for (let key in Htmlproperty) {
+            for (let object in Htmlproperty[key]) {
+                iterator[key][object] = Htmlproperty[key][object];
+            }
+        }
+    }
+    return querySelector.length != 1 ? querySelector : querySelector[0];
 }
 let VpnData = [], date = new Date();
 //----------- Start --------------
-
 //Check online
 if (!navigator.onLine) {
-    Elem(".AD img").src = "./icon/wait_32.gif";
-    Elem(".AD img").style.margin = "50% auto";
-    Elem(".AD img").style.width = "10%";
-
-    Elem("#close").style.visibility = 'hidden';
-    Elem("#redirecAD").style.visibility = 'hidden';
-
-    Elem(".AD").style.backgroundColor = '#fff';
+    Elem(".AD img", {
+        style: { margin: "50% auto", width: "10%" },
+    }).src = "./icon/wait_32.gif";
+    Elem("#close , #redirecAD", { style: { visibility: "hidden" } });
+    Elem(".AD").style.backgroundColor = "#fff";
 }
 
 // Get ip on open app
 async function checkIP() {
-    let data = await URI("https://api.linkirani.ir/apiv1/client/current")
-        .catch(() => ({ ip: "درحال برسی ..." }));
+    let data = await URI("https://api.linkirani.ir/apiv1/client/current").catch(
+        () => ({ ip: "درحال برسی ..." })
+    );
     Elem("#ip").innerText = data.ip;
 }
 checkIP();
@@ -31,7 +36,6 @@ SendMessage({ mesage: "check" }, (data) => {
     for (const key in data) {
         // Use Data from API
         if (key == "contorols") {
-
             let { alert, AD: arrAD, bypassing, off, timeAd, up, version } = data.contorols;
 
             //set proxy from API
@@ -39,49 +43,52 @@ SendMessage({ mesage: "check" }, (data) => {
 
             //-----Force Update
             if (version != chrome.runtime.getManifest().version) {
-                Elem(".details").style.display = "block";
-
-                Elem(".details").style.top = "0px";
-
-                Elem(".details").style.lineHeight = 2;
-
-                Elem(".details").style.height = "100%";
-                Elem(".details").style.padding = "50% 0";
-
-                Elem(".details").innerHTML = 'این نسخه از دسترس خارج شده است<br>لطفاً آن را از لینک زیر بروزرسانی کنید<br><a href="#" target="_blank">OK</a>';
+                Elem(".details", {
+                    style: {
+                        display: "block",
+                        top: "0px",
+                        lineHeight: 2,
+                        height: "100%",
+                        padding: "50% 0",
+                    },
+                }).innerHTML = 'این نسخه از دسترس خارج شده است<br>لطفاً آن را از لینک زیر بروزرسانی کنید<br><a href="#" target="_blank">OK</a>';
             }
 
             // Off feture
-            if (off.length != 0) { off.forEach(val => { Elem(`#${val}`).style.display = 'none'; }) }
+            if (off.length != 0) {
+                off.forEach((val) => {
+                    Elem(`#${val}`).style.display = "none";
+                });
+            }
 
             // Show Note And Alert
             if (alert.length != 0) {
-
                 let count = alert.length - 1;
                 setInterval(() => {
-                    Elem('.alert p').innerHTML = alert[count];
-                    if (count == 0) { count = alert.length; }
+                    Elem(".alert p").innerHTML = alert[count];
+                    if (count == 0) {
+                        count = alert.length;
+                    }
                     count -= 1;
                 }, 8000);
-
             }
 
             // Show AD
             if (arrAD.length != 0) {
-                let section = arrAD.filter(({ status }) => status == 'section');
+                let section = arrAD.filter(({ status }) => status == "section");
                 let random = (obj) => obj[Math.round(Math.random() * (obj.length - 1))];
                 //******       HOME  */
                 if (date.getTime() > timeAd) {
-                    let home = arrAD.filter(({ status }) => status == 'home');
+                    let home = arrAD.filter(({ status }) => status == "home");
 
                     Elem("#close").disabled = true;
-
                     Elem(".AD img").src = random(home).img;
-                    Elem('#redirecAD').onclick = () => {
+
+                    Elem("#redirecAD").onclick = () => {
                         chrome.tabs.create({ url: random(home).src });
                     };
 
-                    Elem('body').style.height = "420px";
+                    Elem("body").style.height = "420px";
 
                     let time = 5;
                     let interval = setInterval(() => {
@@ -94,40 +101,44 @@ SendMessage({ mesage: "check" }, (data) => {
 
                             (async () => {
                                 let gtdata = await Storage();
-                                gtdata.contorols.timeAd = date.getTime() + (20 * 60 * 1000);
-                                Storage('set', gtdata);
+                                gtdata.contorols.timeAd = date.getTime() + 20 * 60 * 1000;
+                                Storage("set", gtdata);
                             })();
                         }
 
                         time -= 1;
-
                     }, 1000);
-
-                } else { AD(undefined, "home"); }
+                } else {
+                    AD(undefined, "home");
+                }
 
                 //******       Banner  */
                 if (section.length != 0) {
                     Elem(".alert img").src = random(section).img;
-                    Elem('.alert img').onclick = () => {
+                    Elem(".alert img").onclick = () => {
                         chrome.tabs.create({ url: random(section).src });
                     };
-                } else { AD("banner") }
-
-            } else { 
-                 Elem('body').style.height = "420px";
-                 //------------
-                if(navigator.onLine){AD("banner", "home")} }
+                } else {
+                    AD("banner");
+                }
+            } else {
+                Elem("body").style.height = "420px";
+                //------------
+                if (navigator.onLine) {
+                    AD("banner", "home");
+                }
+            }
 
             //Show update
             if (up.top != 0 && up.height != 0) {
-                Elem(".details").style.display = "block";
-
-                Elem(".details").style.top = up.top + "px";
-                Elem(".details").style.height = up.height + "em";
-                Elem(".details").style.lineHeight = up.height;
-
-                Elem(".details").innerText = up.text;
-
+                Elem(".details", {
+                    style: {
+                        display: "block",
+                        top: p.top + "px",
+                        height: up.height + "em",
+                        lineHeight: up.height,
+                    },
+                }).innerText = up.text;
             }
         } else {
             Elem("#" + key).checked = !data[key];
@@ -138,22 +149,31 @@ SendMessage({ mesage: "check" }, (data) => {
 // Set Event for All check box and save on database
 let checkbox = document.getElementsByClassName("checkbox");
 for (let i = 0; i < checkbox.length; i++) {
-
     checkbox[i].onclick = function () {
-        SendMessage({ mesage: "update", state: { [this.getAttribute("id")]: !this.checked } })
-        if (['bank', 'site'].includes(this.getAttribute("id"))) {
+        SendMessage({
+            mesage: "update",
+            state: { [this.getAttribute("id")]: !this.checked },
+        });
+        if (["bank", "site"].includes(this.getAttribute("id"))) {
             Icon();
         }
     };
 }
+
 //---------------------------------VPN
 Elem("#VPN").onclick = function () {
-    if (this.checked && VpnData[0].hasOwnProperty('host')) {
+    if (this.checked && VpnData[0].hasOwnProperty("host")) {
         let config = {
             value: {
                 mode: "fixed_servers",
                 rules: {
-                    bypassList: ["<local>", "192.168.0.0/16", "172.16.0.0/12", "10.0.0.0/8", "fd00::/8"],
+                    bypassList: [
+                        "<local>",
+                        "192.168.0.0/16",
+                        "172.16.0.0/12",
+                        "10.0.0.0/8",
+                        "fd00::/8",
+                    ],
                     singleProxy: {
                         scheme: VpnData[0].scheme,
                         host: VpnData[0].host,
@@ -178,15 +198,13 @@ Elem("#VPN").onclick = function () {
 //------ Advertising
 function AD(withbanner, withhome) {
     if (withbanner == "banner") {
-        Elem(".alert img").style.visibility = 'hidden';
-        Elem(".alert img").style.display = 'none';
+        Elem(".alert img", { style: { visibility: "hidden", display: "none" } });
     }
     if (withhome == "home") {
-        let Ad = document.getElementsByClassName("AD")[0];
-        Ad.style.visibility = "hidden"; Ad.style.opacity = "0";
-        let App = Elem("#root");
-        App.style.display = "block";
-        Elem('body').style.height = "auto";
+        Elem(".AD", { style: { visibility: "hidden", opacity: 0 } });
+
+        Elem("#root").style.display = "block";
+        Elem("body").style.height = "auto";
     }
 }
 Elem("#close").onclick = function () {
@@ -195,17 +213,20 @@ Elem("#close").onclick = function () {
 
 //-------List Vpns
 Elem(".listcountry").onclick = function () {
-    // Elem(".listVpn").style.display = "block";
     if (Elem(".listVpn").style.top == "46%") {
         Elem(".listVpn").style.top = "100%";
-        //    Elem(".listVpn").style.display = "none";
     } else {
         Elem(".listVpn").style.top = "46%";
     }
-}
+};
 Elem(".listVpn *").onclick = function (e) {
     e.target.parentElement.style.top = "100%";
+};
 
-}
+//------- Google Analytics 
 
+ga('create', 'UA-177267045-1', 'auto');
 
+// Modifications: 
+ga('set', 'checkProtocolTask', null); // Disables file protocol checking.
+ga('send', 'pageview', '/popup'); // Set page, avoiding rejection due to chrome-extension protocol 
