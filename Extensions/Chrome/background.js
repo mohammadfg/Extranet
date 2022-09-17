@@ -75,7 +75,7 @@ async function Handel_code(tabId, stage) {
       proxy.settings.clear({ scope: "regular" });
       Storage("set", stage);
 
-      Icon("./icon/shaparak.png", "Safe");
+      Icon("./icon/shaparak.png", "Safe", "green");
     } else if (
       (check.protocol == "https:" || check.protocol == "http:") &&
       stage.site &&
