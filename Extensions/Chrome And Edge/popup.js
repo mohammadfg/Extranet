@@ -102,7 +102,7 @@ if (!navigator.onLine) {
                                 Elem("#close").disabled = false;
                                 Elem("#close").innerText = "×";
                                 clearInterval(interval);
-            SendMessage({ mesage: 'update', contorols: { timeAd: date.getTime() + 20 * 60 * 1000 } });
+                                SendMessage({ mesage: 'update', contorols: { timeAd: date.getTime() + 20 * 60 * 1000 } });
                             }
 
                             time -= 1;
