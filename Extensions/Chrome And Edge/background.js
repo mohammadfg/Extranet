@@ -4,68 +4,57 @@ const { runtime, tabs, proxy } = chrome;
 ////------------ Start
 
 function CheckParts(back) {
-  try {
-    let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
 
-    Promise.all([api, Storage()]).then(([data, local]) => {
-      let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
+  let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
+  // let api = URI('./contorols.json', undefined, undefined, undefined, "json");
 
-      // set Data in local for once
-      let updStage;
-      let nextRl = new Date().getTime() + 45 * 60 * 1000;
+  let store = { bank: true, site: true, VPN: true };
+  // set Data in local for once
+  let updStage;
+  let nextRl = new Date().getTime() + 45 * 60 * 1000;
 
-      if (Object.keys(local).length == 0) {
-        //------- ([Bank,Site,dev]) true == ON  ||||  (VPN) true == OFF
-        let store = { bank: true, site: true, VPN: true };
-        delete contorols.blocklist;
-        updStage = {
-          ...store,
-          contorols: { ...contorols, timeAd: 0, timeRl: nextRl, key: "" },
-        };
-        proxy.settings.clear({ scope: "regular" });
-      } else {
-        // premium account
-        let { premium, key } = local.contorols;
-        if (premium.includes(md5(key))) {
-          contorols.AD = [];
-        }
-        delete contorols.blocklist;
+  Promise.all([api, Storage()]).then(([data, local]) => {
+    let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
 
-        updStage = {
-          ...local,
-          contorols: {
-            ...local.contorols,
-            ...contorols,
-            timeAd: 0,
-            timeRl: nextRl,
-          },
-        };
+    // let contorols = data;
+
+    if (Object.keys(local).length == 0) {
+      //------- ([Bank,Site,dev]) true == ON  ||||  (VPN) true == OFF
+      delete contorols.blocklist;
+      updStage = { ...store, contorols: { ...contorols, timeAd: 0, timeRl: nextRl, key: "" } };
+      proxy.settings.clear({ scope: "regular" });
+    } else {
+      // premium account
+      let { premium, key } = local.contorols;
+      if (premium.includes(md5(key))) {
+        contorols.AD = [];
       }
+      delete contorols.blocklist;
 
-      Storage("set", updStage);
+      updStage = { ...local, contorols: { ...local.contorols, ...contorols, timeAd: 0, timeRl: nextRl } };
+    }
 
-      //check Vpn on Startup
-      if (!updStage.VPN) {
-        Icon("./icon/130.png");
-      } else {
-        Icon();
-      }
-      //return calback
-      if (back) {
-        back(updStage);
-      }
-    });
-  } catch (e) { }
+    Storage("set", updStage);
+
+    //return calback
+    if (back) {
+      back(updStage);
+    }
+  }).catch(() => {
+    let error = { ...store, contorols: { AD: [], updateLink: "http://yun.ir/rtjm39", timeRl: nextRl } };
+    if (back) {
+      back(error)
+    }
+    Storage('set', error);
+  });
+
+
 }
 
-runtime.onStartup.addListener(() => {
-  CheckParts();
-});
-
 async function Handel_code(tabId, stage) {
-  let data = await Tab_get(tabId).catch(() => {
-    active: false;
-  });
+  let data = await Tab_get(tabId).catch(() => ({
+    active: false
+  }));
 
   if (data.active) {
     // My if check
@@ -76,11 +65,9 @@ async function Handel_code(tabId, stage) {
       Storage("set", stage);
 
       Icon("./icon/shaparak.png", "Safe");
-    } else if (
-      (check.protocol == "https:" || check.protocol == "http:") &&
-      stage.site &&
-      !check.hostname.match(/localhost|192.168.*|172.31.*|10.*|127.0.*/)
-    ) {
+    }
+    else if ((check.protocol == "https:" || check.protocol == "http:") && stage.site &&
+      !check.hostname.match(/localhost|192.168.*|172.31.*|10.*|127.0.*/)) {
       try {
         let value = await URI(
           "https://api.linkirani.ir/apiv1/shortlink",
@@ -123,6 +110,9 @@ async function Checkup({ tabId }) {
   }
 }
 
+runtime.onStartup.addListener(() => {
+  CheckParts();
+});
 tabs.onActivated.addListener(function (result) {
   Checkup(result);
 });
@@ -134,23 +124,34 @@ runtime.onMessage.addListener((msg, sender, sendResponse) => {
   // sender.id == chrome.runtime.id &&
 
   Storage().then((stage) => {
-    if (Object.keys(stage).length == 0) {
-      CheckParts((backdata) => {
-        sendResponse(backdata);
-      });
-    } else if (msg.mesage == "check") {
-      sendResponse(stage);
-      //----------------------------------------------
-      //------- checkpart after 45 Min
-      let time = new Date().getTime();
-      if (time > stage.contorols.timeRl) {
-        CheckParts();
+
+    if (msg.mesage == "check") {
+
+      if (Object.keys(stage).length == 0) {
+        CheckParts((backdata) => {
+          sendResponse(backdata);
+        });
+      } else {
+        sendResponse(stage);
+        //------- checkpart after 45 Min
+        let time = new Date().getTime();
+        if (time > stage.contorols.timeRl) {
+          CheckParts();
+        }
       }
-    } else if (msg.mesage == "update") {
+    }
+    else if (msg.mesage == "update") {
+
+      //--------Set state from Page
       if (msg.hasOwnProperty("state")) {
         // Get name elements
         let keys = Object.keys(msg.state)[0];
         stage[keys] = msg.state[keys];
+      }
+      //---- Set value Contorols from popupjs
+      if (msg.hasOwnProperty("contorols")) {
+        let keys = Object.keys(msg.contorols)[0];
+        stage.contorols[keys] = msg.contorols[keys];
       }
       Storage("set", stage);
     }
@@ -158,11 +159,6 @@ runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   return true;
 });
-
-runtime.onSuspend.addListener(() => {
-  Icon('./icon/129.png')
-});
-
 //-------Oninstall Message to user
 runtime.onInstalled.addListener(({ reason }) => {
   if (reason === runtime.OnInstalledReason.INSTALL) {

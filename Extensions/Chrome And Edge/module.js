@@ -34,13 +34,12 @@ function SendMessage(DataSend, calback) {
   })
 }
 
-
 async function Storage(parametr, value) {
   if (parametr == 'set') {
     storage.local.set(value);
-  } else {
-    return await storage.local.get();
+    return;
   }
+  return await storage.local.get();
 }
 function md5(inputString = "") {
   var hc = "0123456789abcdef";
