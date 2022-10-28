@@ -1,0 +1,174 @@
+@import "./buttom.css";
+@import "./vpn.css";
+@import "./dark.css";
+
+@font-face {
+  font-family: "B-Yekan";
+  src: url("./iranyekanwebmedium.ttf");
+}
+
+* {
+  font-family: "B-Yekan";
+  cursor: default;
+
+}
+body {
+  min-width: 300px;
+  margin: 0;
+  padding-bottom: 10px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  background-color: var(--dark-bg);
+  color: var(--dark-color);
+  transition: background-color 300ms ease;
+}
+body.dark input{
+  color: white;
+}
+#root {
+  margin: 0 5px;
+}
+/*  @keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.vip input{
+  width: 97%;
+  cursor: pointer;
+  border: 0;
+  height: 15px;
+  border-radius: 4px;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  padding: 3px 4px;
+  outline: none;
+}  */
+
+/* @keyframes zoom-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+} */
+.AD,
+.loading {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: 4;
+  background-color: #000;
+  text-align: center;
+  width: 100%;
+}
+.AD {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 500ms, visibility 500ms;
+}
+.AD button {
+  right: 5px;
+  top: 5px;
+  color: #fff;
+  position: inherit;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 3px;
+  backdrop-filter: blur(10px);
+  background-color: rgb(0 0 0 / 23%);
+}
+.AD p {
+  text-align: center;
+  position: inherit;
+  bottom: 0;
+  width: 270px;
+  left: 4px;
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 3px;
+  backdrop-filter: blur(10px);
+  background-color: rgb(0 0 0 / 23%);
+}
+.tools {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+
+.box {
+  width: 99%;
+  direction: rtl;
+  margin: 5px 1px;
+}
+
+.Nimservice input{
+  width: 80%;
+  text-align: center;
+  cursor: pointer;
+  border: 0.5px solid #959595;
+  border-radius: 10px;
+  padding: 3px 4px;
+  background-color: transparent;
+  float: left;
+  font-family: auto;
+}
+.Nimservice input::placeholder{
+font-family: 'B-Yekan';
+}
+.Nimservice button{
+  background: transparent;
+  border: 0.5px solid #7a7a7a;
+  color: var(--dark-color);
+
+  border-radius: 14px;
+}
+.Nimservice button:hover{
+  cursor: pointer;
+  background: #dfdfdf85;
+}
+
+.alert p {
+  text-align: center;
+  background-color: #ffff0029;
+  padding: 4px;
+  border-radius: 5px;
+  font-size: 11px;
+  transition: all 0.5s;
+  font-weight: bold;
+  margin: 0 0 7px;
+  direction: rtl;
+  border: 1px solid gold;
+}
+.alert img {
+  width: 100%;
+  cursor: pointer;
+}
+/**
+---------- Loading
+*/
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000d1;
+  visibility: hidden;
+}
+
+.version {
+  display: inline;
+}
