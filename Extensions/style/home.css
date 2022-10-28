@@ -1,47 +1,79 @@
 @import "./buttom.css";
 @import "./vpn.css";
+@import "./dark.css";
 
 @font-face {
   font-family: "B-Yekan";
   src: url("./iranyekanwebmedium.ttf");
 }
+
 * {
   font-family: "B-Yekan";
   cursor: default;
-}
 
+}
 body {
-  height: 300px;
   min-width: 300px;
   margin: 0;
   padding-bottom: 10px;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  background-color: var(--dark-bg);
+  color: var(--dark-color);
+  transition: background-color 300ms ease;
+}
+body.dark input{
+  color: white;
 }
 #root {
-  display: none;
   margin: 0 5px;
 }
-@keyframes zoom-in {
+/*  @keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.vip input{
+  width: 97%;
+  cursor: pointer;
+  border: 0;
+  height: 15px;
+  border-radius: 4px;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  padding: 3px 4px;
+  outline: none;
+}  */
+
+/* @keyframes zoom-in {
   from {
     transform: scale(0);
   }
   to {
     transform: scale(1);
   }
-}
+} */
 .AD,
 .loading {
   position: absolute;
   top: 0;
   height: 100%;
-  z-index: 3;
+  z-index: 4;
   background-color: #000;
   text-align: center;
   width: 100%;
 }
 .AD {
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 500ms, visibility 500ms;
 }
 .AD button {
@@ -54,11 +86,6 @@ body {
   border-radius: 3px;
   backdrop-filter: blur(10px);
   background-color: rgb(0 0 0 / 23%);
-}
-
-.AD img {
-  animation: zoom-in 300ms 1;
-  width: 100%;
 }
 .AD p {
   text-align: center;
@@ -78,14 +105,41 @@ body {
   display: flex;
   flex-direction: column;
   align-items: end;
+  gap: 4px;
+  margin-bottom: 8px;
 }
 
 
-.vpn {
+.box {
   width: 99%;
   direction: rtl;
-  height: 150px;
   margin: 5px 1px;
+}
+
+.Nimservice input{
+  width: 80%;
+  text-align: center;
+  cursor: pointer;
+  border: 0.5px solid #959595;
+  border-radius: 10px;
+  padding: 3px 4px;
+  background-color: transparent;
+  float: left;
+  font-family: auto;
+}
+.Nimservice input::placeholder{
+font-family: 'B-Yekan';
+}
+.Nimservice button{
+  background: transparent;
+  border: 0.5px solid #7a7a7a;
+  color: var(--dark-color);
+
+  border-radius: 14px;
+}
+.Nimservice button:hover{
+  cursor: pointer;
+  background: #dfdfdf85;
 }
 
 .alert p {
@@ -96,7 +150,7 @@ body {
   font-size: 11px;
   transition: all 0.5s;
   font-weight: bold;
-  margin: 4px 0 3px;
+  margin: 0 0 7px;
   direction: rtl;
   border: 1px solid gold;
 }
@@ -111,13 +165,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #00000033;
+  background-color: #000000d1;
   visibility: hidden;
 }
 
 .version {
-  font-family: cursive;
-  color: #a5a5a5;
   display: inline;
-  margin-left: 10px;
 }

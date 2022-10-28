@@ -4,19 +4,15 @@ const { runtime, tabs, proxy } = chrome;
 ////------------ Start
 
 function CheckParts(back) {
-
-  let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
-  // let api = URI('./contorols.json', undefined, undefined, undefined, "json");
-
-  let store = { bank: true, site: true, VPN: true };
-  // set Data in local for once
-  let updStage;
-  let nextRl = new Date().getTime() + 45 * 60 * 1000;
+  // let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
+  // let api = URI('https://extranet.s3.ir-thr-at1.arvanstorage.com/contorols.json',{method:"GET"});
+  let api = URI('./contorols.json'), updStage,
+    store = { bank: true, site: true, VPN: true, Translate: false, lablevpn: {}, theme: true }, nextRl = new Date().getTime() + 45 * 60000;
 
   Promise.all([api, Storage()]).then(([data, local]) => {
-    let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
+    // let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
 
-    // let contorols = data;
+    let contorols = data;
 
     if (Object.keys(local).length == 0) {
       //------- ([Bank,Site,dev]) true == ON  ||||  (VPN) true == OFF
@@ -69,12 +65,8 @@ async function Handel_code(tabId, stage) {
     else if ((check.protocol == "https:" || check.protocol == "http:") && stage.site &&
       !check.hostname.match(/localhost|192.168.*|172.31.*|10.*|127.0.*/)) {
       try {
-        let value = await URI(
-          "https://api.linkirani.ir/apiv1/shortlink",
-          { "content-type": "application/json;charset=UTF-8" },
-          JSON.stringify({ url: check.hostname }),
-          "POST"
-        );
+        let value = await URI("https://api.linkirani.ir/apiv1/shortlink",
+          { body: JSON.stringify({ url: check.hostname }) });
 
         let flags = value.link.netloc.ipCountryCode;
 
@@ -116,13 +108,17 @@ runtime.onStartup.addListener(() => {
 tabs.onActivated.addListener(function (result) {
   Checkup(result);
 });
-tabs.onUpdated.addListener(function (tabId) {
-  Checkup({ tabId: tabId });
+
+let contorolUpdate;
+tabs.onUpdated.addListener(function (tabId, { status }) {
+  if (status == "complete" && contorolUpdate != tabId) {
+    Checkup({ tabId: tabId }); contorolUpdate = tabId;
+  }
 });
 
 runtime.onMessage.addListener((msg, sender, sendResponse) => {
   // sender.id == chrome.runtime.id &&
-
+  console.log(msg)
   Storage().then((stage) => {
 
     if (msg.mesage == "check") {
@@ -141,18 +137,12 @@ runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
     }
     else if (msg.mesage == "update") {
-
       //--------Set state from Page
-      if (msg.hasOwnProperty("state")) {
+      if (Object.hasOwn(msg, "contorols") || Object.hasOwn(msg, "state")) {
         // Get name elements
-        let keys = Object.keys(msg.state)[0];
-        stage[keys] = msg.state[keys];
+        stage = { ...stage, ...msg.state, contorols: { ...stage.contorols, ...msg.contorols } }
       }
-      //---- Set value Contorols from popupjs
-      if (msg.hasOwnProperty("contorols")) {
-        let keys = Object.keys(msg.contorols)[0];
-        stage.contorols[keys] = msg.contorols[keys];
-      }
+
       Storage("set", stage);
     }
   });

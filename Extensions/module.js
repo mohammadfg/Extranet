@@ -15,19 +15,33 @@ function Tab_get(number) {
   const result = tabs.get(number);
   return result;
 }
-function URI(url, hed = { "content-type": "text/html; charset=UTF-8" }, body = "", method = "GET", returns = "json") {
-  return fetch(url, {
-    headers: hed,
-    ...(body.length != 0 ? { body: body } : null),
-    method: method,
-  }).then((res) => (
-    returns == "json" ? res.json() : returns == "blob" ? res.blob() : res.text()
-  ));
-}
+function URI(url, input = {}) {
 
+  let meta = {
+    hede: {
+      "accept-language": "fa",
+      "content-type": (input.returns ? "text/html; charset=UTF-8" : "application/json;charset=UTF-8"),
+      "authorization": input.authorization
+    },
+    body: input.body,
+    method: input.method ?? "POST",
+    returns: input.returns ?? "json"
+  };
+  return fetch(url, {
+    headers: meta.hede,
+    body: meta.body,
+    method: meta.method,
+  }).then((res) => {
+    if (res.ok) {
+      return meta.returns == "json" ? res.json() : meta.returns == "blob" ? res.blob() : res.text()
+    }
+    else { throw new Error("URI went wrong.") }
+  });
+}
+/* 
 function validURL(value) {
   return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
-}
+} */
 function SendMessage(DataSend, calback) {
   runtime.sendMessage(runtime.id, DataSend, (result) => {
     result && calback(result);
@@ -84,5 +98,5 @@ function md5(inputString = "") {
   }
   return rh(a) + rh(b) + rh(c) + rh(d);
 }
-export { Icon, Tab_get, URI, validURL, SendMessage, Storage, md5 };
+export { Icon, Tab_get, URI, SendMessage, Storage, md5 };
 
