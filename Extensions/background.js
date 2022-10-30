@@ -1,50 +1,41 @@
-import { Icon, md5, Storage, Tab_get, URI } from "./module.js";
+import { Icon, Storage, Tab_get, URI } from "./module.js";
 const { runtime, tabs, proxy } = chrome;
 
 ////------------ Start
 
-function CheckParts(back) {
+async function CheckParts(back) {
   // let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
   // let api = URI('https://extranet.s3.ir-thr-at1.arvanstorage.com/contorols.json',{method:"GET"});
   let api = URI('./contorols.json'), updStage,
-    store = { bank: true, site: true, VPN: true, Translate: false, lablevpn: {}, theme: true }, nextRl = new Date().getTime() + 45 * 60000;
+    store = { bank: true, site: true, VPN: true, Translate: false, lablevpn: {}, theme: true }, nextRl = new Date().getTime() + 45 * 60000, storage = await Storage();
 
-  Promise.all([api, Storage()]).then(([data, local]) => {
+  Promise.all([api, Storage()]).then(([contorols, local]) => {
     // let contorols = JSON.parse(data.match(/<pre .* id="extranet-panel">(.*)<\/pre>/s)[1]);
+    // let contorols = data;
 
-    let contorols = data;
-
-    if (Object.keys(local).length == 0) {
-      //------- ([Bank,Site,dev]) true == ON  ||||  (VPN) true == OFF
-      delete contorols.blocklist;
-      updStage = { ...store, contorols: { ...contorols, timeAd: 0, timeRl: nextRl, key: "" } };
-      proxy.settings.clear({ scope: "regular" });
-    } else {
-      // premium account
-      let { premium, key } = local.contorols;
-      if (premium.includes(md5(key))) {
-        contorols.AD = [];
-      }
-      delete contorols.blocklist;
-
-      updStage = { ...local, contorols: { ...local.contorols, ...contorols, timeAd: 0, timeRl: nextRl } };
-    }
+    //  if (Object.keys(local).length == 0) {
+    //------- ([Bank,Site,dev]) true == ON  ||||  (VPN) true == OFF
+    //  updStage = { ...store, contorols: { ...contorols, timeAd: 0, timeRl: nextRl, key: "" } };
+    updStage = { ...store, ...local, contorols: { ...local?.contorols, ...contorols, timeAd: 0, timeRl: nextRl, key: "" } };
+    //  } else {
+    //    updStage = { ...local, contorols: { ...local.contorols, ...contorols, timeAd: 0, timeRl: nextRl } };
+    //   }
 
     Storage("set", updStage);
 
     //return calback
-    if (back) {
-      back(updStage);
-    }
+    // if (back) {
+    //   back(updStage);
+    //  }
   }).catch(() => {
-    let error = { ...store, contorols: { AD: [], updateLink: "http://yun.ir/rtjm39", timeRl: nextRl } };
-    if (back) {
-      back(error)
-    }
-    Storage('set', error);
+    updStage =
+      { ...store, ...storage, contorols: { ...storage?.contorols, AD: [], timeRl: 0, timeAd: 0 } };
+    Storage('set', updStage);
   });
 
-
+  if (back) {
+    back(updStage)
+  }
 }
 
 async function Handel_code(tabId, stage) {
@@ -151,6 +142,8 @@ runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 //-------Oninstall Message to user
 runtime.onInstalled.addListener(({ reason }) => {
+  //Off All proxy for true Work
+  proxy.settings.clear({ scope: "regular" });
   if (reason === runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({
       url: 'whats-new.html'

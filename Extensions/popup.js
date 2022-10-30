@@ -64,21 +64,22 @@ async function checkIP() {
 
 // Set Theme
 function Theme(check) {
-    if (check) {
-        Elem('body').classList.replace('night', 'dark');
-    } else {
-        Elem('body').classList.replace('dark', 'night');
-
-    }
+    Elem('body').classList.replace(check ? 'night' : 'dark', check ? 'dark' : 'night');
 }
 //----------- Start --------------
 //Check online
+function Loading(mesage) {
+    /*     Elem(".AD img", {
+            style: { margin: "50% auto", width: "10%" },
+        }).src = "./icon/wait_32.gif";
+        Elem("#close , #redirecAD", { style: { visibility: "hidden" } });
+        Elem(".AD", { style: { opacity: "1", visibility: "visible", backgroundColor: "rgb(0 0 0 / 95%)" } }); */
+    Elem(".loading", { style: { opacity: "1", visibility: "visible" } });
+    Elem("#loading").innerText = mesage;
+
+}
 checkIP().catch(() => {
-    Elem(".AD img", {
-        style: { margin: "50% auto", width: "10%" },
-    }).src = "./icon/wait_32.gif";
-    Elem("#close , #redirecAD", { style: { visibility: "hidden" } });
-    Elem(".AD", { style: { opacity: "1", visibility: "visible", backgroundColor: "#fff" } });
+    Loading('لطفاً اتصال به شبکه را برسی کنید');
 })
 
 // Sync ( True | false ) check box on open extension
@@ -86,25 +87,16 @@ SendMessage({ mesage: "check" }, (data) => {
     for (const key in data) {
         // Use Data from API
         if (key == "contorols") {
-            let { alert = [], AD: arrAD = [], bypass = [], off = [], timeAd, up = { top: null, height: null }, version, updateLink, key = "", premium = [], half, donate = "#" } = data.contorols;
-
-            //set proxy from API
-            VpnData = {
-                bypass: bypass, lablevpn: data.lablevpn,
-                user_premium: premium.includes(md5(key))
-            };
-            // contorol nimbaha
-            ctrnimbaha = half;
+            let chromeVR = chrome.runtime.getManifest().version, 
+            { alert = [], AD: arrAD = [], bypass = [], off = [], timeAd, up = { top: null, height: null }, version = chromeVR, updateLink, key = "", premium = [], half, donate = "#" } = data.contorols;
 
             //-----Force Update
             // Version Undefined === when api error and not get data
-            if (version != chrome.runtime.getManifest().version || version == undefined) {
+            if (version != chromeVR) {
                 Elem(".details", {
                     style: {
-                        display: "block",
-                        top: "0px",
-                        lineHeight: 2,
-                        height: "100%",
+                        display: "block",top: "0px",
+                        lineHeight: 2,height: "100%",
                         padding: "50% 0",
                     },
                 }).innerHTML = `این نسخه از دسترس خارج شده است<br>لطفاً آن را از لینک زیر بروزرسانی کنید<br><a href="${updateLink}" target="_blank">${updateLink}</a>`;
@@ -132,7 +124,7 @@ SendMessage({ mesage: "check" }, (data) => {
             }
 
             // Show AD
-            if (arrAD.length != 0) {
+            if (arrAD.length != 0 && !premium.includes(md5(key))) {
                 let random = (obj) => obj[Math.round(Math.random() * (obj.length - 1))];
                 //******       HOME  */
                 if (date.getTime() > timeAd) {
@@ -164,7 +156,7 @@ SendMessage({ mesage: "check" }, (data) => {
                         time -= 1;
                     }, 1000);
                 } else {
-                    AD(undefined, "home");
+                    AD(null, "home");
                 }
                 let section = arrAD.filter(({ status }) => status == "section");
                 //******       Banner  */
@@ -190,12 +182,21 @@ SendMessage({ mesage: "check" }, (data) => {
                     },
                 }).innerText = up.text;
             }
+            //save proxy from API and check Connection
+            if (bypass.length != 0) {
+                VpnData = {
+                    bypass: bypass, lablevpn: data.lablevpn,
+                    user_premium: premium.includes(md5(key))
+                };
+                // contorol nimbaha
+                ctrnimbaha = half;
+            } else { Loading() }
             // set donate link
             Elem('#donate').setAttribute('href', donate);
 
         }
         // Add country list ( Select Box)
-        else if (key == "lablevpn") {
+        else if (key == "lablevpn" && Object.keys(data.lablevpn) != 0) {
             let { name, country } = data.lablevpn;
             Elem('.listcountry').innerHTML = `<img src="./icon/flags/${country}.png" alt="Flag" loading="lazy" />${name}`;
         }
@@ -261,7 +262,7 @@ function AD(withbanner, withhome) {
     }
 }
 Elem("#close").onclick = function () {
-    AD(undefined, "home");
+    AD(null, "home");
 };
 
 //-------List Vpns
@@ -301,7 +302,7 @@ Elem(".listVpn").onclick = function ({ target }) {
 Elem("#submit_url").onclick = function () {
     let linkdl = Elem('#nimurl').value;
 
-    fetch(linkdl, { method: "HEAD" }).then(({ url, headers }) => {
+    URI(linkdl, { method: "HEAD" }).then(({ url, headers }) => {
 
         let fileType = url.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[1];
         let fileSize = headers.get("content-length") / 1024 / 1024;
@@ -312,39 +313,9 @@ Elem("#submit_url").onclick = function () {
             Elem('.loading').style.visibility = 'visible';
 
 
-            URI(`https://panel.arvanstorage.com/panel/upload/from_url/bucket/extranet/object/${filename}.${fileType}?is_public=false`, {
-                body: JSON.stringify({ url: url }),
-                authorization: "Apikey " + apikey
-            }).then(({ code }) => {
-                if (code == 200) {
-                    setTimeout(() => {
-                        URI(`https://panel.arvanstorage.com/panel/url/bucket/extranet/object/${filename}.${fileType}?expiry=${ctrnimbaha.expireFile}`, {
-                            authorization: "Apikey " + apikey, method: "GET"
-                        }).then(value => {
-                            console.log(value)
-                            Elem('.loading').style.visibility = 'hidden';
-
-                        });
-                    }, 10000);
-                }
-            });
         }
 
-        /*             if (validURL(response.url) && ['mkv', 'mp4', 'mp3', 'rar', 'zip'].includes(filetype)) {
-        
-                        fetch(`https://linknim.ir/api.php?url=${response.url}&step=download`).then(({ url }) => {
-                            let params = (new URL(url)).searchParams;
-                            let link = params.get("link");
-                            fetch(link).then(data => data.blob()).then((download) => {
-                                var a = document.createElement("a");
-                                a.href = URL.createObjectURL(download);
-                                a.setAttribute("download", '[extranet]-' + filename);
-                                a.click();
-                                a.remove();
-        
-                            })
-                        });
-                    } */
+
     });
 
 };
