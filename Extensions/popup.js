@@ -64,7 +64,7 @@ async function checkIP() {
 
 // Set Theme
 function Theme(check) {
-    Elem('body').classList.replace(check ? 'night' : 'dark', check ? 'dark' : 'night');
+    Elem('body').classList.replace(check ? 'dark' : 'night', check ? 'night' : 'dark');
 }
 //----------- Start --------------
 //Check online
@@ -75,11 +75,11 @@ function Loading(mesage) {
         Elem("#close , #redirecAD", { style: { visibility: "hidden" } });
         Elem(".AD", { style: { opacity: "1", visibility: "visible", backgroundColor: "rgb(0 0 0 / 95%)" } }); */
     Elem(".loading", { style: { opacity: "1", visibility: "visible" } });
-    Elem("#loading").innerText = mesage;
+    Elem("#loading").innerHTML = mesage ?? '';
 
 }
-checkIP().catch(() => {
-    Loading('لطفاً اتصال به شبکه را برسی کنید');
+checkIP().catch((e) => {
+    Loading(`لطفاً اتصال به شبکه را برسی کنید <br> ${e}`);
 })
 
 // Sync ( True | false ) check box on open extension
@@ -87,22 +87,23 @@ SendMessage({ mesage: "check" }, (data) => {
     for (const key in data) {
         // Use Data from API
         if (key == "contorols") {
-            let chromeVR = chrome.runtime.getManifest().version, 
-            { alert = [], AD: arrAD = [], bypass = [], off = [], timeAd, up = { top: null, height: null }, version = chromeVR, updateLink, key = "", premium = [], half, donate = "#" } = data.contorols;
+            let chromeVR = chrome.runtime.getManifest().version,
+                { alert = [], AD: arrAD = [], proxyList = [], off = [], timeAd, up = { top: null, height: null }, version = chromeVR, updateLink, key = "", premium = [], half, donate = "#" } = data.contorols;
 
             //-----Force Update
             // Version Undefined === when api error and not get data
             if (version != chromeVR) {
-                Elem(".details", {
-                    style: {
-                        display: "block",top: "0px",
-                        lineHeight: 2,height: "100%",
-                        padding: "50% 0",
-                    },
-                }).innerHTML = `این نسخه از دسترس خارج شده است<br>لطفاً آن را از لینک زیر بروزرسانی کنید<br><a href="${updateLink}" target="_blank">${updateLink}</a>`;
+                /*       Elem(".details", {
+                          style: {
+                              display: "block", top: "0px",
+                              lineHeight: 2, height: "100%",
+                              padding: "20% 0",
+                          },
+                      }).innerHTML = `☠️ این ورژن منسخوخ شده است<br>🔗 لطفاً از لینک زیر برای بروزرسانی کنید<br><a href="${updateLink}" target="_blank">${updateLink}</a>`; */
+                Loading(`☠️ این ورژن منسخوخ شده است<br>🔗 لطفاً از لینک زیر برای بروزرسانی اقدام کنید<br><a href="${updateLink}" target="_blank">${updateLink}</a>`);
             }
 
-            // Off feture
+            // Off feture == (feture) ==> On off || save Data Off
             if (off.length != 0) {
                 off.forEach((val) => {
                     Elem(`#${val}`).style.display = "none";
@@ -111,6 +112,7 @@ SendMessage({ mesage: "check" }, (data) => {
 
             // Show Note And Alert
             if (alert.length != 0) {
+                Elem(`.alert p`).style.display = "block";
                 let count = alert.length - 1;
                 setInterval(() => {
                     Elem(".alert p").innerHTML = alert[count];
@@ -119,9 +121,9 @@ SendMessage({ mesage: "check" }, (data) => {
                     }
                     count -= 1;
                 }, 8000);
-            } else {
-                Elem(`.alert`).style.display = "none";
-            }
+            }/*  else {
+                Elem(`.alert p`).style.display = "block";
+            } */
 
             // Show AD
             if (arrAD.length != 0 && !premium.includes(md5(key))) {
@@ -130,7 +132,7 @@ SendMessage({ mesage: "check" }, (data) => {
                 if (date.getTime() > timeAd) {
                     let home = arrAD.filter(({ status }) => status == "home");
 
-                    Elem("#close").disabled = true;
+                    // Elem("#close").disabled = true;
                     Elem(".AD img").src = random(home).img;
 
                     Elem("#redirecAD").onclick = () => {
@@ -161,16 +163,16 @@ SendMessage({ mesage: "check" }, (data) => {
                 let section = arrAD.filter(({ status }) => status == "section");
                 //******       Banner  */
                 if (section.length != 0) {
-                    Elem(".alert img").src = random(section).img;
+                    Elem(".alert img", { style: { display: "block" } }).src = random(section).img;
                     Elem(".alert img").onclick = () => {
                         chrome.tabs.create({ url: random(section).src });
                     };
-                } else {
+                }/*  else {
                     AD("banner");
-                }
-            } else {
+                } */
+            }/*  else {
                 AD("banner", "home");
-            }
+            } */
             //Show datails for Off feture
             if (up.top != null && up.height != null) {
                 Elem(".details", {
@@ -183,14 +185,14 @@ SendMessage({ mesage: "check" }, (data) => {
                 }).innerText = up.text;
             }
             //save proxy from API and check Connection
-            if (bypass.length != 0) {
+            if (proxyList.length != 0) {
                 VpnData = {
-                    bypass: bypass, lablevpn: data.lablevpn,
+                    bypass: proxyList, lablevpn: data.lablevpn,
                     user_premium: premium.includes(md5(key))
                 };
                 // contorol nimbaha
                 ctrnimbaha = half;
-            } else { Loading() }
+            }/*  else { Loading() } */
             // set donate link
             Elem('#donate').setAttribute('href', donate);
 
@@ -206,26 +208,27 @@ SendMessage({ mesage: "check" }, (data) => {
             //set event for element
             Elem("#theme").onclick = function () {
                 let theme = Elem('body').classList.contains('dark');
-                theme ? Theme(false) : Theme(true);
+                theme ? Theme(true) : Theme(false);
                 //save in storage
-                SendMessage({ mesage: "update", state: { theme: !theme } });
+                SendMessage({ mesage: "update", state: { theme: theme } });
             };
         }
-        else if (!(["VPN", "lablevpn"].includes(key))) {
+        else if (key != "VPN") {
             // Set Event for All check box and save on database
             Elem("#" + key).onclick = function () {
                 SendMessage({
                     mesage: "update",
-                    state: { [key]: !data[key] },
+                    state: { [key]: this.checked },
                 });
-                if (["bank", "site"].includes(key)) {
-                    Icon();
-                }
+                //   if (["bank", "site"].includes(key)) {
+                Icon();
+                //  }
             };
 
         }
+
         // Check off or On checkbox
-        Elem("#" + key).checked = !data[key];
+        Elem("#" + key).checked = data[key];
     }
 });
 //---------------------------------VPN
@@ -237,14 +240,14 @@ Elem("#VPN").onclick = function () {
         );
         SetProxy(filtered[0]);
 
-        SendMessage({ mesage: "update", state: { VPN: false } });
+        SendMessage({ mesage: "update", state: { VPN: true } });
         Icon("./icon/130.png");
         checkIP();
     } else {
         if (VpnData.length == 0) {
             this.checked = false;
         }
-        SendMessage({ mesage: "update", state: { VPN: true } });
+        SendMessage({ mesage: "update", state: { VPN: false } });
         chrome.proxy.settings.clear({ scope: "regular" });
         Icon();
         checkIP();
@@ -307,7 +310,7 @@ Elem("#submit_url").onclick = function () {
         let fileType = url.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[1];
         let fileSize = headers.get("content-length") / 1024 / 1024;
         let filename = url.split('/').pop().replace(/(.*)\.[^.]+$/, "$1");
-        let apikey = ctrnimbaha.Apikey;
+        // let apikey = ctrnimbaha.Apikey;
 
         if (fileSize <= ctrnimbaha.sizeDownload) {
             Elem('.loading').style.visibility = 'visible';

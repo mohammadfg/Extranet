@@ -28,28 +28,39 @@
   z-index: 2;
 }
 .layer{
-  border-radius: 3px;
-  height: 20px;
-  width: 35px;
-  background-color: #23a132;
+
   position: relative;
+
+ /*  background-color: #23a132;
   top: -41px;
   left: 0.5%;
   transition: 0.3s ease all;
-}
-
-.checkbox:checked ~ .layer {
-  width: 46px;
+ */   top: -41px;
+   width: 46px;
+  height: 20px;
+  border-radius: 3px;
   transition: 0.3s ease all;
   left: 42.5%;
   background-color: #f44336;
-  color: white;
+  color: black;
+
+}
+
+.checkbox:checked ~ .layer {
+  border-radius: 3px;
+  height: 20px;
+  width: 35px;
+  color: black;
+  top: -41px;
+  background-color: #23a132;
+  left: 0.5%;
+  transition: 0.3s ease all;
 }
 .checkbox:checked + .lable_check {
-  color: black;
+  color: white;
 }
 .checkbox:checked + .lable_check .mrg {
-  color: white;
+  color: black;
 }
 .lable_check{
   top: -24px;
@@ -61,14 +72,14 @@
   justify-content: center;
   align-items: center;
   padding: 0px 5px;
-  color: white;
+  color: black;
 
 }
 .lable_check p {
   margin: 0;
 }
 .lable_check .mrg{
-color: black;
+color: white;
 }
 .lable_check .mrg{
   margin-left: 10px;

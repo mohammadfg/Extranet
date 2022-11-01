@@ -143,6 +143,7 @@ font-family: 'B-Yekan';
 }
 
 .alert p {
+  display: none;
   text-align: center;
   background-color: #ffff0029;
   padding: 4px;
@@ -155,6 +156,7 @@ font-family: 'B-Yekan';
   border: 1px solid gold;
 }
 .alert img {
+  display: none;
   width: 100%;
   cursor: pointer;
 }
@@ -163,11 +165,12 @@ font-family: 'B-Yekan';
 */
 .loading {
   transition: opacity 500ms;
+  direction: rtl;
   opacity: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000000f2;
+  color: white;background-color: #000000f2;
   visibility: hidden;
   flex-direction: column;
 }
