@@ -50,8 +50,7 @@ function SendMessage(DataSend, calback) {
 
 async function Storage(parametr, value) {
   if (parametr == 'set') {
-    storage.local.set(value);
-    return;
+    return storage.local.set(value);
   }
   return await storage.local.get();
 }

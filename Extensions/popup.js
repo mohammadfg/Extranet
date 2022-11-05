@@ -51,10 +51,7 @@ function SetProxy(vpn) {
 async function checkIP() {
     // https://testspeed.ir/backend/getIP.php
     let data = await URI("https://api.linkirani.ir/apiv1/client/current", { method: "GET" })
-        .catch((e) => {
-            console.log(e);
-            return { ip: "درحال برسی ...", error: e }
-        });
+        .catch((e) => ({ ip: "درحال برسی ...", error: e }));
     Elem("#ip").innerText = data.ip;
 
     if (data.error) {
@@ -68,13 +65,13 @@ function Theme(check) {
 }
 //----------- Start --------------
 //Check online
-function Loading(mesage) {
+function Loading(mesage, visibility) {
     /*     Elem(".AD img", {
             style: { margin: "50% auto", width: "10%" },
         }).src = "./icon/wait_32.gif";
         Elem("#close , #redirecAD", { style: { visibility: "hidden" } });
         Elem(".AD", { style: { opacity: "1", visibility: "visible", backgroundColor: "rgb(0 0 0 / 95%)" } }); */
-    Elem(".loading", { style: { opacity: "1", visibility: "visible" } });
+    Elem(".loading", { style: { opacity: "1", visibility: visibility ?? 'visible' } });
     Elem("#loading").innerHTML = mesage ?? '';
 
 }
@@ -88,7 +85,7 @@ SendMessage({ mesage: "check" }, (data) => {
         // Use Data from API
         if (key == "contorols") {
             let chromeVR = chrome.runtime.getManifest().version,
-                { alert = [], AD: arrAD = [], proxyList = [], off = [], timeAd, up = { top: null, height: null }, version = chromeVR, updateLink, key = "", premium = [], half, donate = "#" } = data.contorols;
+                { alert = [], AD: arrAD = [], proxyList = [], off = [], timeAd, up = { top: null, height: null }, version = chromeVR, updateLink, keys = "", premium = [], half, donate = "#" } = data.contorols;
 
             //-----Force Update
             // Version Undefined === when api error and not get data
@@ -126,7 +123,7 @@ SendMessage({ mesage: "check" }, (data) => {
             } */
 
             // Show AD
-            if (arrAD.length != 0 && !premium.includes(md5(key))) {
+            if (arrAD.length != 0 && !premium.includes(md5(keys))) {
                 let random = (obj) => obj[Math.round(Math.random() * (obj.length - 1))];
                 //******       HOME  */
                 if (date.getTime() > timeAd) {
@@ -188,7 +185,7 @@ SendMessage({ mesage: "check" }, (data) => {
             if (proxyList.length != 0) {
                 VpnData = {
                     bypass: proxyList, lablevpn: data.lablevpn,
-                    user_premium: premium.includes(md5(key))
+                    user_premium: premium.includes(md5(keys))
                 };
                 // contorol nimbaha
                 ctrnimbaha = half;
@@ -244,9 +241,7 @@ Elem("#VPN").onclick = function () {
         Icon("./icon/130.png");
         checkIP();
     } else {
-        if (VpnData.length == 0) {
-            this.checked = false;
-        }
+        if (VpnData['bypass'].length == 0) { this.checked = false; }
         SendMessage({ mesage: "update", state: { VPN: false } });
         chrome.proxy.settings.clear({ scope: "regular" });
         Icon();
@@ -257,7 +252,8 @@ Elem("#VPN").onclick = function () {
 //------ Advertising
 function AD(withbanner, withhome) {
     if (withbanner == "banner") {
-        Elem(".alert img", { style: { visibility: "hidden", display: "none" } });
+        // Elem(".alert img", { style: { visibility: "hidden", display: "none" } });
+        Elem(".alert img").style.display = "none";
     }
     if (withhome == "home") {
         Elem(".AD", { style: { visibility: "hidden", opacity: 0 } });
@@ -292,6 +288,7 @@ Elem(".listVpn").onclick = function ({ target }) {
     if (target.getAttribute('data-vip') == 'false' || VpnData.user_premium) {
         let country = target.id, name = target.innerText;
         VpnData['lablevpn'] = { name: name, country: country };
+
         Elem('.listcountry').innerHTML = `<img src="./icon/flags/${country}.png" alt="Flag" loading="lazy" />${name}`;
 
         SendMessage({ mesage: 'update', state: { lablevpn: { name: name, country: country } } });
@@ -304,16 +301,16 @@ Elem(".listVpn").onclick = function ({ target }) {
 
 Elem("#submit_url").onclick = function () {
     let linkdl = Elem('#nimurl').value;
-
+    // check for redirect links 
     URI(linkdl, { method: "HEAD" }).then(({ url, headers }) => {
 
-        let fileType = url.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[1];
-        let fileSize = headers.get("content-length") / 1024 / 1024;
-        let filename = url.split('/').pop().replace(/(.*)\.[^.]+$/, "$1");
+        let fileType = url.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)[1],
+            fileSize = headers.get("content-length") / 1024 / 1024,
+            filename = url.split('/').pop().replace(/(.*)\.[^.]+$/, "$1");
         // let apikey = ctrnimbaha.Apikey;
 
         if (fileSize <= ctrnimbaha.sizeDownload) {
-            Elem('.loading').style.visibility = 'visible';
+            //  Elem('.loading').style.visibility = 'visible';
 
 
         }
