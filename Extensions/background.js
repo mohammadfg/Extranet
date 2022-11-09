@@ -93,7 +93,8 @@ async function Checkup({ tabId }) {
   if (stage.site || stage.bank) {
     Handel_code(tabId, stage);
   }
-  else if (stage.VPN != undefined && stage.VPN) {
+  //stage.VPN != undefined &&
+  else if (stage.VPN) {
     Icon("./icon/130.png");
   } else {
     Icon();
@@ -116,7 +117,7 @@ tabs.onUpdated.addListener(function (tabId, { status }) {
 
 runtime.onMessage.addListener((msg, sender, sendResponse) => {
   // sender.id == chrome.runtime.id &&
-  console.log(msg)
+  //  console.log(msg)
   Storage().then((stage) => {
 
     if (msg.mesage == "check") {
@@ -152,9 +153,7 @@ runtime.onInstalled.addListener(({ reason }) => {
   //Off All proxy for true Work
   proxy.settings.clear({ scope: "regular" });
   if (reason === runtime.OnInstalledReason.INSTALL) {
-    chrome.tabs.create({
-      url: 'whats-new.html'
-    });
+    tabs.create({ url: 'whats-new.html' });
   }
 });
 

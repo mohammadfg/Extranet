@@ -10,7 +10,6 @@
 * {
   font-family: "B-Yekan";
   cursor: default;
-
 }
 body {
   min-width: 300px;
@@ -22,9 +21,9 @@ body {
   color: var(--dark-color);
   transition: background-color 300ms ease;
 }
-body.dark input{
+/* body.dark input{
   color: white;
-}
+} */
 #root {
   margin: 0 5px;
 }
@@ -67,8 +66,10 @@ body.dark input{
   top: 0;
   height: 100%;
   z-index: 4;
-  background-color: #000;
+  background-color: #000000f2;
+  color: white;
   text-align: center;
+  direction: rtl;
   width: 100%;
 /* Common */
   opacity: 0;
@@ -86,21 +87,19 @@ body.dark input{
   border-radius: 3px;
   cursor: pointer;
   text-align: center;
-  color: #fff;
+  border: 1px solid #404040;
+  background-color: rgb(56 56 56 / 52%);
 }
 .AD button {
+  color: #fff;
   right: 5px;
   top: 5px;
-  border: 1px solid black;
-  background-color: rgb(0 0 0 / 23%);
 }
 .AD p {
   bottom: 0;
   width: 270px;
   left: 4px;
   padding: 10px;
-  border: 1px solid #404040;
-  background-color: rgb(56 56 56 / 52%);
 }
 .tools {
   display: flex;
@@ -112,19 +111,21 @@ body.dark input{
 
 
 .box {
-  width: 99%;
+  /* width: 99%; */
   direction: rtl;
-  margin: 5px 1px;
+  margin-top: 5px;
 }
 .Nimservice input , .Nimservice button {
   cursor: pointer;
   border: 0.5px solid #7a7a7a;
   background: transparent;
+  color: var(--dark-color);
+  border-radius: 10px;
 }
 .Nimservice input{
   width: 80%;
   /* text-align: center; */
-  border-radius: 10px;
+  /* border-radius: 10px; */
   padding: 3px 4px;
   float: left;
   font-family: auto;
@@ -132,10 +133,10 @@ body.dark input{
 .Nimservice input::placeholder{
 font-family: 'B-Yekan';
 }
-.Nimservice button{
+/* .Nimservice button{
   color: var(--dark-color);
   border-radius: 14px;
-}
+} */
 .Nimservice button:hover{
   background: #dfdfdf85;
 }
@@ -162,23 +163,20 @@ font-family: 'B-Yekan';
 ---------- Loading
 */
 .loading {
-  direction: rtl;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  color: white;background-color: #000000f2;
   /* 
   opacity: 0;
   transition: opacity 500ms;
   visibility: hidden; */
-  flex-direction: column;
 }
 .details{
   display: none;animation: zoom-in 500ms;
   text-align: center;position: absolute;
-  font-weight: bold;text-shadow: 0px 0px 6px black;
   direction: rtl;background-color: rgb(0 0 0 / 90%);
-  z-index: 3;width: 100%;
+  z-index: 3;width: 100%;top: 0;
   color: white;font-size: 15px;
 }
 /* .version {

@@ -2,7 +2,7 @@ import { Icon, SendMessage, URI, md5 } from "./module.js";
 
 function Elem(SelectorId, Htmlproperty) {
     let querySelector = document.querySelectorAll(SelectorId);
-    if (Htmlproperty != undefined) {
+    if (Htmlproperty) {
         //
         // (( this Code Commented for SpeedUp And Clear Code for App ))
         //
@@ -25,16 +25,14 @@ let VpnData = {}, date = new Date(), ctrnimbaha = {};
 
 // Set Proxy System
 function SetProxy(vpn) {
-    let config = {
+    chrome.proxy.settings.set({
         value: {
             mode: "fixed_servers",
             rules: {
                 bypassList: [
                     "<local>",
-                    "192.168.0.0/16",
-                    "172.16.0.0/12",
-                    "10.0.0.0/8",
-                    "fd00::/8",
+                    "192.168.0.0/16", "172.16.0.0/12",
+                    "10.0.0.0/8", "fd00::/8",
                 ],
                 singleProxy: {
                     scheme: vpn.scheme,
@@ -44,8 +42,7 @@ function SetProxy(vpn) {
             },
         },
         scope: "regular",
-    };
-    chrome.proxy.settings.set(config);
+    });
 }
 // Get ip on open app
 async function checkIP() {
@@ -182,17 +179,17 @@ SendMessage({ mesage: "check" }, (data) => {
                 }).innerText = up.text;
             }
             //save proxy from API and check Connection
-            if (proxyList.length != 0) {
-                VpnData = {
-                    bypass: proxyList, lablevpn: data.lablevpn,
-                    user_premium: premium.includes(md5(keys))
-                };
-                // contorol nimbaha
-                ctrnimbaha = half;
-            }/*  else { Loading() } */
+            // if (proxyList.length != 0) {
+            VpnData = {
+                bypass: proxyList, lablevpn: data.lablevpn,
+                user_premium: premium.includes(md5(keys))
+            };
+            // contorol nimbaha
+            ctrnimbaha = half;
+            //   }/*  else { Loading() } */
             // set donate link
             Elem('#donate').setAttribute('href', donate);
-
+            // continue;
         }
         // Add country list ( Select Box)
         else if (key == "lablevpn" && Object.keys(data.lablevpn) != 0) {
@@ -210,22 +207,23 @@ SendMessage({ mesage: "check" }, (data) => {
                 SendMessage({ mesage: "update", state: { theme: theme } });
             };
         }
-        else if (key != "VPN") {
-            // Set Event for All check box and save on database
-            Elem("#" + key).onclick = function () {
-                SendMessage({
-                    mesage: "update",
-                    state: { [key]: this.checked },
-                });
-                //   if (["bank", "site"].includes(key)) {
-                Icon();
-                //  }
-            };
-
+        else {
+            if (key != "VPN") {
+                // Set Event for All check box and save on database
+                Elem("#" + key).onclick = function () {
+                    SendMessage({
+                        mesage: "update",
+                        state: { [key]: this.checked },
+                    });
+                    //   if (["bank", "site"].includes(key)) {
+                    Icon();
+                    //  }
+                };
+            }
+            // Check off or On checkbox
+            Elem("#" + key).checked = data[key];
         }
 
-        // Check off or On checkbox
-        Elem("#" + key).checked = data[key];
     }
 });
 //---------------------------------VPN
@@ -278,7 +276,7 @@ Elem(".listcountry").onclick = function () {
         // Set List Vpn
         VpnData['bypass'].forEach(({ country, name, premium }) => {
             Elem(".listVpn").innerHTML +=
-                `<div class="itemflags" id="${country}" data-vip="${!!premium}">
+                `<div id="${country}" data-vip="${!!premium}">
         <img src="./icon/flags/${country}.png" alt="Flag" loading="lazy" />${name}<span class="${(premium ?? 'hidden')}">VIP👑</span></div>`;
         })
     }

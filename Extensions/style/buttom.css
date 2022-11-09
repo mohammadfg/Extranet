@@ -1,6 +1,5 @@
 .box_button{
-  display: flex;
-
+  display: inherit;
 }
 .buttom{
   width: 80px;
@@ -16,7 +15,8 @@
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
   margin: 0;
-  height: 13px;
+  height: 13px;  
+  font-size:11px;
 }
 .checkbox{
   height: 100%;
@@ -73,20 +73,21 @@
   align-items: center;
   padding: 0px 5px;
   color: black;
-
+  gap: 10px;
 }
-.lable_check p {
+/* .lable_check p {
   margin: 0;
-}
+} */
 .lable_check .mrg{
 color: white;
-}
-.lable_check .mrg{
+} 
+/* .lable_check .mrg{
+color: white;
   margin-left: 10px;
-}
-.fs-11{
+} 
+/* .fs-11{
   font-size:11px;
-}
+} */
 .hidden{
   visibility: hidden;
 }
