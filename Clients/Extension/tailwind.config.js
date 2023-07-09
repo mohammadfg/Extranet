@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     // Or if using `src` directory:
@@ -7,10 +6,7 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
-    fontFamily: {
-      'sans': ['Proxima Nova', ...defaultTheme.fontFamily.sans],
-    }
+    extend: {}
   },
   plugins: [],
 }

@@ -31,11 +31,15 @@ export default function Advertising({ title, link, counter, size ,visibility }: 
       </div>
     );
   }else if(size === 'poster' && visibility){
-    return (    <img
-      src="https://file3.soft98.ir/iranicard12.gif"
-      loading="lazy"
-      alt="Adveretising"
-      class="m-auto w-11/12 mt-3"
-    />);
+    return (
+      <a href="" target="_blank">
+        <img
+          src="https://file3.soft98.ir/iranicard12.gif"
+          loading="lazy"
+          alt="Adveretising"
+          class="m-auto w-full px-1 mt-3"
+        />
+      </a>
+    );
   }
 }
