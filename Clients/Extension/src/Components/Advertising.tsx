@@ -37,7 +37,7 @@ export default function Advertising({ title, link, counter, size ,visibility }: 
           src="https://file3.soft98.ir/iranicard12.gif"
           loading="lazy"
           alt="Adveretising"
-          class="m-auto w-full px-1 mt-3"
+          class="m-auto w-full px-1 mt-1 rounded-lg"
         />
       </a>
     );
