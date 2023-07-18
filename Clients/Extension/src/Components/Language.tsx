@@ -1,18 +1,23 @@
 import { useContext } from "preact/hooks";
-import { DropdownContext } from "./Dropdown";
+import { Context } from "../Context/Main";
 export default function Language() {
-  const { handleVisiblity } = useContext(DropdownContext);
+  const { handleVisiblity = () => null } = useContext(Context);
   return (
     <button
       onClick={() => {
-        handleVisiblity([
-          { displayName: "فارسی - ایران", CountryFlag: "ir", language: "fa" },
-          {
-            displayName: "English - United States",
-            CountryFlag: "us",
-            language: "en",
+        handleVisiblity({
+          dropdown: {
+            dataSheet: {
+              ir: { displayName: "فارسی - ایران", rtl: true, language: "fa" },
+              us: {
+                displayName: "English - United States",
+                rtl: false,
+                language: "en",
+              },
+            },
+            visibility: true,
           },
-        ]);
+        });
       }}
       className="w-14 bg-gray-100 dark:bg-slate-400 rounded-b-md ml-1"
     >

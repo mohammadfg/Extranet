@@ -1,7 +1,7 @@
-import {useContext} from 'preact/hooks'
-import { DropdownContext } from './Dropdown';
+import { useContext } from "preact/hooks";
+import { Context } from "../Context/Main";
 export default function Switch() {
-  const { handleVisiblity } = useContext(DropdownContext);
+  const { handleVisiblity = () => null } = useContext(Context);
 
   return (
     <>
@@ -22,18 +22,23 @@ export default function Switch() {
       </div>
       <button
         onClick={() => {
-          handleVisiblity({
-            us: [
-              {
-                scheme: "https",
-                host: "blade6.frankfurt-rack417.nodes.gen4.ninja",
-                username: "",
-                password: "",
-                port: 9002,
-                type: "free",
+            handleVisiblity({
+              dropdown: {
+                dataSheet: {
+                  us: [
+                    {
+                      scheme: "https",
+                      host: "blade6.frankfurt-rack417.nodes.gen4.ninja",
+                      username: "",
+                      password: "",
+                      port: 9002,
+                      type: "free",
+                    },
+                  ],
+                },
+                visibility: true,
               },
-            ],
-          });
+            });
         }}
         className="bg-gray-100 rounded-md px-2 pt-1 w-24 justify-self-center mt-1"
       >

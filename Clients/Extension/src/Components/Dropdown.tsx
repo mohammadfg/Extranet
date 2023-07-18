@@ -1,93 +1,61 @@
-import { createContext } from "preact";
-import { useState, useContext } from "preact/hooks";
+import { Context } from "../Context/Main";
+import type {Context as ContextInterface,Server,CountryLists,ServerConfig} from "../Context/Main";
+import { useContext } from "preact/hooks";
 
-interface CountryLists {
-  displayName: string;
-  CountryFlag: string;
-  language: string;
-}
-interface ServerConfig {
-  scheme: string;
-  host: string;
-  username: string;
-  password: string;
-  port: number;
-  type: string;
-}
-interface Server<T> {
-  [key: string]: T[];
-}
-interface Dorpdown {
-  dataSheet: Array<CountryLists> | Server<ServerConfig>;
-  handleVisiblity: () => void;
-  visibility: boolean;
-}
 
-export const DropdownContext = createContext(null);
-
-export function DropdownContoroler({ children }) {
-  const [state, setState] = useState({ visibility: false });
-  function handleVisiblity(dataSheet) {
-    setState((latest) => ({
-      visibility: !latest.visibility,
-      dataSheet: dataSheet,
-    }));
-  }
-  return (
-    <DropdownContext.Provider value={{ handleVisiblity, ...state }}>
-      {children}
-    </DropdownContext.Provider>
-  );
-}
 export default function Dorpdown() {
-  const { visibility, handleVisiblity, dataSheet } = useContext<Dorpdown>(DropdownContext);
-  function createLists(parameter: Array<CountryLists> | Server<ServerConfig>) {
-    let dataTypeCheck;
+  const {
+    dropdown: { visibility, dataSheet },handleVisiblity = () => null ,
+  } = useContext<ContextInterface>(Context);
+  function createLists(parameter: Server<CountryLists> | Server<Array<ServerConfig>> | {}) {
     let jsx = [];
+    // if (Array.isArray(parameter)) {
+    //   dataTypeCheck = parameter;
+    // } else {
+    //   dataTypeCheck = Object.entries(parameter);
+    // }
+    // for (const iterator of dataTypeCheck) {
+    //   //  if (!Array.isArray(iterator)) {
+    //   // const { displayName, CountryFlag, language } = iterator;
+    //   const [CountryFlag, information] = iterator;
 
-    if (Array.isArray(parameter)) {
-      dataTypeCheck = parameter;
-    } else {
-      dataTypeCheck = Object.entries(parameter);
-    }
-    console.log(dataTypeCheck)
-    for (const iterator of dataTypeCheck) {
-      //  if (!Array.isArray(iterator)) {
-     // const { displayName, CountryFlag, language } = iterator;
-        const [ CountryFlag,information ] = iterator;
+    //   jsx.push(
+    //     <li className="rounded-md p-2 dark:border-b-slate-700 hover:bg-gray-200 dark:hover:bg-slate-700 cursor-pointer even:border-b border-gray-100 ">
+    //       <img
+    //         src={`/assets/icons/flags/${CountryFlag}.png`}
+    //         alt=""
+    //         className="w-6 inline mr-1"
+    //       />
+    //       {CountryFlag}
+    //       {/* <img
+    //           src="/assets/icons/flags/fast.png"
+    //           alt=""
+    //           className="w-6 inline float-right"
+    //         /> */}
+    //     </li>
+    //   );
+    // }
+    // return jsx;
+    console.log(parameter);
 
-      jsx.push(
-        <li className="rounded-md p-2 dark:border-b-slate-700 hover:bg-gray-200 dark:hover:bg-slate-700 cursor-pointer even:border-b border-gray-100 ">
-          <img
-            src={`/assets/icons/flags/${CountryFlag}.png`}
-            alt=""
-            className="w-6 inline mr-1"
-          />
-          {CountryFlag}
-          {/* <img
-              src="/assets/icons/flags/fast.png"
-              alt=""
-              className="w-6 inline float-right"
-            /> */}
-        </li>
-      );
-    }
-    return jsx;
+    return null;
   }
   return (
     <div
       className={
         "shadow-xl dark:bg-slate-950 rounded-t-md dark:text-white p-1 absolute w-[95%] bg-white z-[2] h-full justify-self-center " +
         (!visibility
-          ? "animate-[moveUptoDown_0.5s_1] top-full invisible"
-          : "animate-[moveDowntoUp_0.5s_1] top-1")
+          ? "animate-[moveUptoDown_0.3s_1] top-full invisible"
+          : "animate-[moveDowntoUp_0.3s_1] top-1")
       }
     >
       <ul>
         <li className="text-right">
           <button
             className="text-red-700 p-2 pb-0 text-2xl"
-            onClick={handleVisiblity}
+            onClick={()=>{handleVisiblity({
+              dropdown: { dataSheet: {}, visibility: false },
+            });}}
           >
             X
           </button>

@@ -1,13 +1,20 @@
-interface Advertising {
-  link: string;
-  title: string;
-  counter: number;
-  size: "banner" | "poster";
-  visibility: true | false
+export interface Advertising {
+  image_url: string;
+  target_url: string;
+  language: string;
+  showtime: number;
+  expire: number;
+  tpye: "banner" | "poster";
+  visibility: boolean;
 }
-export default function Advertising({ title, link, counter, size ,visibility }: Advertising) {
+export default function Advertising({
+  image_url,
+  showtime,
+  tpye,
+  visibility,
+}: Advertising) {
   function handleAd() {}
-  if (size === "banner" && visibility) {
+  if (tpye === "banner" && visibility) {
     return (
       <div className="relative">
         <button
@@ -30,7 +37,7 @@ export default function Advertising({ title, link, counter, size ,visibility }: 
         </a>
       </div>
     );
-  }else if(size === 'poster' && visibility){
+  } else if (tpye === "poster" && visibility) {
     return (
       <a href="" target="_blank">
         <img
@@ -42,4 +49,5 @@ export default function Advertising({ title, link, counter, size ,visibility }: 
       </a>
     );
   }
+  return null;
 }

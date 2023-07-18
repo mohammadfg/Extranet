@@ -4,6 +4,7 @@
   "description": "A different way to reach the free world",
   "author": "MohamaadFg",
   "manifest_version": 3,
+  "default_locale": "en",
   "permissions": ["tabs", "proxy", "storage"],
   "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
@@ -13,16 +14,16 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "128": "./assets/icon/128.png",
-      "48": "./assets/icon/48.png",
-      "32": "./assets/icon/32.png",
-      "16": "./assets/icon/16.png"
+      "128": "./assets/icons/128.png",
+      "48": "./assets/icons/48.png",
+      "32": "./assets/icons/32.png",
+      "16": "./assets/icons/16.png"
     }
   },
   "icons": {
-    "128": "./assets/icon/128.png",
-    "48": "./assets/icon/48.png",
-    "32": "./assets/icon/32.png",
-    "16": "./assets/icon/16.png"
+    "128": "./assets/icons/128.png",
+    "48": "./assets/icons/48.png",
+    "32": "./assets/icons/32.png",
+    "16": "./assets/icons/16.png"
   }
 }
