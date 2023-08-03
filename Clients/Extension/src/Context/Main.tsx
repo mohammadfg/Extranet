@@ -2,6 +2,7 @@ import { JSX, createContext } from "preact";
 import { useState } from "preact/hooks";
 
 interface Props {
+  // [key: string]:T;
   children?: JSX.Element | JSX.Element[];
   // any props that come into the component
 }

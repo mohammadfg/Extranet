@@ -1,8 +1,10 @@
 // //import { Icon, Storage, Tab_get, URI } from "./module";
- const { runtime, tabs, proxy } = chrome;
-// ////------------ Start
-// //calback function get (back) parametr
-// async function CheckParts() {
+const { runtime, tabs, proxy } = chrome;
+
+// async function SyncData() {
+//   const Store = {
+//     Theme:"light"
+//   }
 //   // let api = URI('https://extranet.blogsky.com/1401/02/25/post-1/', undefined, undefined, undefined, "text");
 //   // let api = URI('https://extranet.s3.ir-thr-at1.arvanstorage.ir/contorols.json',{method:"GET"});
 
@@ -173,9 +175,12 @@
 // });
 // //-------Oninstall Message to user
 runtime.onInstalled.addListener(({ reason }) => {
-  //Off All proxy for true Work
+  //disable all proxy for true and best work
   proxy.settings.clear({ scope: "regular" });
   if (reason === runtime.OnInstalledReason.INSTALL) {
+    tabs.create({ url: "Welcome.html" });
+    runtime.setUninstallURL("https://example.com/extension-survey");
+  } else if (reason === runtime.OnInstalledReason.UPDATE) {
     tabs.create({ url: "WhatsNew.html" });
   }
 });

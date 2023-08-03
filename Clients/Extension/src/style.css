@@ -13,11 +13,45 @@
       "Helvetica Neue", sans-serif;
   }
   @keyframes moveDowntoUp {
-    from {top: 100%;visibility: visible;}
-    to {top: 0;visibility: hidden;}
-  }  
+    from {
+      top: 100%;
+    }
+    to {
+      top: 0;
+    }
+  }
   @keyframes moveUptoDown {
-    from {top: 0;visibility: hidden;}
-    to {top: 100%;visibility: visible;}
+    from {
+      top: 0;
+      visibility: visible;
+    }
+    to {
+      top: 100%;
+      visibility: hidden;
+    }
+  }
+  @keyframes scaleUp {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  @keyframes scaleDown {
+    from {
+      transform: scale(1);
+      visibility: visible;
+    }
+    to {
+      transform: scale(0);
+      visibility: hidden;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #252527;
   }
 }
