@@ -1,4 +1,5 @@
 import { render } from "preact";
+// import { useEffect } from "preact/hooks";
 import "./style.css";
 import Advertising from "./Components/Advertising";
 import Toggle from "./Components/Toggle";
@@ -19,7 +20,7 @@ export function App() {
         tpye: "poster",
         image_url: "",
         target_url: "",
-        language: "fa",
+        location: "fa",
         showtime: 10000,
         expire: 10000,
         visibility: true,
@@ -38,7 +39,9 @@ export function App() {
       ],
     },
   });
+  // useEffect(()=>{
 
+  // },[])
   function handleTheme() {
     setState((latest) => ({
       ...latest,
@@ -49,14 +52,14 @@ export function App() {
   return (
     <div class={state.theme} dir="ltr">
       <div className="grid w-72 dark:bg-[#0a1722] max-h-[470px] overflow-hidden relative transition-all duration-500">
-        <ContextContoroler>
+        {/* <ContextContoroler> */}
           <header class="flex h-6 px-1 rtl:flex-row-reverse">
             <Theme handleTheme={handleTheme} />
             <Language />
-            <Account />
+            <Account displayName="Guste" />
           </header>
           <Switch />
-        </ContextContoroler>
+        {/* </ContextContoroler> */}
         {/* <Advertising
           link="ss"
           title="ss"

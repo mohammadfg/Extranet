@@ -1,7 +1,7 @@
 export interface Advertising {
   image_url: string;
   target_url: string;
-  language: string;
+  location: string;
   showtime: number;
   expire: number;
   tpye: "banner" | "poster";
@@ -9,11 +9,11 @@ export interface Advertising {
 }
 export default function Advertising({
   image_url,
-  showtime,
+  target_url,
   tpye,
   visibility,
 }: Advertising) {
-  function handleAd() {}
+  function handleAd() { }
   if (tpye === "banner" && visibility) {
     return (
       <div className="relative">
@@ -24,13 +24,13 @@ export default function Advertising({
           X
         </button>
         <img
-          src="https://unsplash.it/288/470"
+          src={image_url}
           loading="lazy"
           alt="Adveretising"
         />
         <a
           className="absolute text-center bottom-0 bg-[#ffffff29] backdrop-blur-md w-full rounded-t-lg p-3"
-          href="#"
+          href={target_url}
           target="_blank"
         >
           🌐 رفتن به صفحه موردنظر
@@ -39,9 +39,9 @@ export default function Advertising({
     );
   } else if (tpye === "poster" && visibility) {
     return (
-      <a href="" target="_blank">
+      <a href={target_url} target="_blank">
         <img
-          src="https://file3.soft98.ir/iranicard12.gif"
+          src={image_url}
           loading="lazy"
           alt="Adveretising"
           class="m-auto w-full px-1 mt-1 rounded-lg"

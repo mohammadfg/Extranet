@@ -1,6 +1,36 @@
 // //import { Icon, Storage, Tab_get, URI } from "./module";
 const { runtime, tabs, proxy } = chrome;
-
+async function GetDataServer(inputPage: "main" | "status") {
+  const url = "http://127.0.0.1:5500/Server/";
+  const pages = {
+    main: url + "contorols-v2.json",
+    status: url + "status.json"
+  }
+  const result = await fetch(pages[inputPage]);
+  return await result.json();
+}
+async function SyncData() {
+  const finalResult = {};
+  try {
+    console.log(await GetDataServer("main"))
+  } catch (error) {
+    for (let i = 0; i < 2; i++) {
+      console.log(i)
+      try {
+        GetDataServer("main");
+        break;
+      } catch (error) {
+        if (i === 2) {
+          try {
+            GetDataServer("status");
+          } catch (error) {
+            throw error;
+          }
+        }
+      }
+    }
+  }
+}
 // async function SyncData() {
 //   const Store = {
 //     Theme:"light"
@@ -124,9 +154,7 @@ const { runtime, tabs, proxy } = chrome;
 //     Icon();
 //   }
 // }
-// runtime.onStartup.addListener(() => {
-//   CheckParts();
-// });
+
 // tabs.onActivated.addListener(function (result) {
 //   Checkup(result);
 // });
@@ -173,6 +201,10 @@ const { runtime, tabs, proxy } = chrome;
 
 //   return true;
 // });
+
+runtime.onStartup.addListener(() => {
+  SyncData();
+});
 // //-------Oninstall Message to user
 runtime.onInstalled.addListener(({ reason }) => {
   //disable all proxy for true and best work

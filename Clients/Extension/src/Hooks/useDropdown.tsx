@@ -2,7 +2,7 @@ import type { Props } from "../Types/Global";
 interface Dropdown extends Props {
   visibility: boolean;
   animations: "slide" | "scale";
-  callbackEvent: (input: string) => void;
+  callbackEvent: (input: object) => void;
 }
 export default function useDorpdown({ visibility, animations, children, callbackEvent }: Dropdown) {
   const selfData = {
@@ -30,7 +30,7 @@ export default function useDorpdown({ visibility, animations, children, callback
       <button
         className="text-red-700 p-2 pb-0 text-2xl font-medium"
         onClick={() => {
-          callbackEvent("Close");
+          callbackEvent({ visibility: false });
         }}
       >
         X

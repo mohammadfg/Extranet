@@ -6,11 +6,12 @@ import { CreateLists } from "./Lists";
 export default function Switch() {
   // const { handleVisiblity = () => null } = useContext(Context);
   const [SwitchData, setSwitchData] = useState({ visibility: false });
-  function callbackEvent(params: string) {
-    setSwitchData({ visibility: false });
+  function callbackEvent(event: object) {
+    console.log(event)
+    setSwitchData((lts) => ({ ...lts, ...event }));
   }
   const dropdownHook = useDropdown({
-    children: <CreateLists />,
+    children: <CreateLists callbackEvent={callbackEvent} />,
     animations: "slide",
     visibility: SwitchData.visibility,
     callbackEvent: callbackEvent,
@@ -38,6 +39,8 @@ export default function Switch() {
       >
         <img
           src="./assets/icons/flags/fast.png"
+          loading="lazy"
+          alt="Flag"
           className="w-4 inline rtl:float-right"
         />
         IRAN
