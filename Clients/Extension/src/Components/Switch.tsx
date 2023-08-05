@@ -5,16 +5,12 @@ import useDropdown from "../Hooks/useDropdown";
 import { CreateLists } from "./Lists";
 export default function Switch() {
   // const { handleVisiblity = () => null } = useContext(Context);
-  const [SwitchData, setSwitchData] = useState({ visibility: false });
   function callbackEvent(event: object) {
     console.log(event)
-    setSwitchData((lts) => ({ ...lts, ...event }));
   }
-  const dropdownHook = useDropdown({
+  const { displayComponent, Contoroler } = useDropdown({
     children: <CreateLists callbackEvent={callbackEvent} />,
-    animations: "slide",
-    visibility: SwitchData.visibility,
-    callbackEvent: callbackEvent,
+    animations: "slide"
   });
   return (
     <>
@@ -34,7 +30,7 @@ export default function Switch() {
         </div>
       </div>
       <button
-        onClick={() => { setSwitchData({ visibility: true }) }}
+        onClick={Contoroler}
         className="bg-gray-100 rounded-md px-2 pt-1 w-24 justify-self-center mt-1"
       >
         <img
@@ -45,7 +41,7 @@ export default function Switch() {
         />
         IRAN
       </button>
-      {dropdownHook}
+      {displayComponent}
     </>
   );
 }
