@@ -4,7 +4,6 @@
   "description": "A different way to reach the free world",
   "author": "MohamaadFg",
   "manifest_version": 3,
-  "default_locale": "en",
   "permissions": ["tabs", "proxy", "storage"],
   "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
