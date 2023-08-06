@@ -5,7 +5,7 @@ import { resolve } from 'path';
 const root = resolve(__dirname, 'src');
 const outDir = resolve(__dirname, 'dist');
 const publicDir = resolve(__dirname, 'public');
-const backgroundFile = resolve(__dirname, 'background.ts');
+const backgroundFile = resolve(root, 'background', 'index.ts');
 
 export default defineConfig({
     resolve: {
@@ -22,7 +22,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 popup: resolve(__dirname, 'index.html'),
-				background:backgroundFile
+                background: backgroundFile
             },
             output: {
                 entryFileNames: (chunk) => {

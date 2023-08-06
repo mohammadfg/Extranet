@@ -1,29 +1,19 @@
 // //import { Icon, Storage, Tab_get, URI } from "./module";
+import sendRequest from './sendRequest'
 const { runtime, tabs, proxy, storage } = chrome;
-async function GetDataServer(inputPage: "main" | "status") {
-  const url = "http://127.0.0.1:5500/Server/";
-  const pages = {
-    main: url + "contorols-v2.json",
-    status: url + "status.json"
-  }
-  return await fetch(pages[inputPage]);
-}
+
 async function SyncData() {
-  let finalResult = { internal: { theme: "light", language: {}, switchMode: false, premium: "", account: {} }, external: {} };
-  let getResponse = false, counter = 0;
-  while (!getResponse && counter < 3) {
+  let finalResult = { internal: { theme: "light", language: {}, switchMode: false, premium: "", account: {}, timeAd: 0 }, external: {}, reload: 0 };
+  let result;
+  try {
+    result = await sendRequest("main");
+    console.log(result)
+  } catch (error) {
     try {
-      let response = await GetDataServer("main");
-      if (response.status === 200) {
-        finalResult = { ...finalResult, external: response.json() };
-        storage.local.set(finalResult)
-        getResponse = true;
-      }
+      result = await sendRequest("status");
+      console.log(result)
     } catch (error) {
-      if (counter === 2) {
-        try { GetDataServer("status") } catch (error) { }
-      }
-      counter++;
+
     }
   }
 }

@@ -1,4 +1,11 @@
-export default function Theme({ handleTheme }: { handleTheme: () => void }) {
+import useCommonState from "@src/Hooks/useCommonState";
+
+export default function Theme() {
+  const [state,syncStateWithStorage] = useCommonState();
+  function handleTheme() {
+    // (state.internal.theme === "dark" ? "light" : "dark")
+    syncStateWithStorage("theme", "dark")
+  }
   return (
     <div
       onClick={handleTheme}
