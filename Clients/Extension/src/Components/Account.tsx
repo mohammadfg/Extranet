@@ -1,4 +1,5 @@
 export default function Account({ displayName }: { displayName: string }) {
+  console.log("render")
   return (
     <div className="w-20 bg-gray-100  dark:bg-slate-400 rounded-b-md ml-auto cursor-help" title="coming soon!">
       <span class="text-xs ml-2">

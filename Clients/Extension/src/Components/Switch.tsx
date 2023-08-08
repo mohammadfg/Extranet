@@ -9,7 +9,10 @@ export default function Switch() {
     console.log(event)
   }
   const { displayComponent, Contoroler } = useDropdown({
-    children: <CreateLists callbackEvent={callbackEvent} />,
+    children: <CreateLists callbackEvent={callbackEvent} inputData={{
+      "us": { "displayName": "English - United State", "shorted": "en" },
+      "ir": { "displayName": "فارسی - ایران", "shorted": "fa" }
+    }} />,
     animations: "slide"
   });
   return (

@@ -3,7 +3,7 @@ import type { Server, ServerConfig } from "../Context/Main";
 import { JSX } from "preact";
 
 export interface Main {
-  [key: string]: any
+  [key: string]: any,
 }
 // export interface Main {
 //   theme: "dark" | "light";

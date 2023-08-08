@@ -21,7 +21,7 @@ export default function Dorpdown({ visibility, animations, children, callbackEve
     return (
         <div
             className={
-                "shadow-xl  dark:bg-slate-950 rounded-t-md dark:text-white p-1 absolute w-[95%] bg-white z-[2] h-full justify-self-center " +
+                "shadow-xl dark:bg-slate-950 rounded-t-md dark:text-white p-1 absolute w-[95%] bg-white z-[2] h-full justify-self-center " +
                 (visibility
                     ? selfData.animations[animations].Up
                     : selfData.animations[animations].Down)

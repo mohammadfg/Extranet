@@ -1,9 +1,9 @@
 // import { useContext } from "preact/hooks";
-import { useState } from "preact/hooks";
 import useDropdown from "../Hooks/useDropdown";
+import { CreateLists } from "./Lists";
 
 // import { Context } from "../Context/Main";
-export default function Language() {
+export default function Language({ displayCurrent, Lists }: { displayCurrent: object, Lists: object }) {
   // const { handleVisiblity = () => null } = useContext(Context);
   // const [SwitchData, setSwitchData] = useState({ visibility: false });
   // function callbackEvent(event: object) {
@@ -11,10 +11,17 @@ export default function Language() {
   //   setSwitchData((lts) => ({ ...lts, ...event }));
   // }
   // const listlanguage = useDorpdown({ visibility: SwitchData.visibility, children: <h1>salam</h1>, animations: "scale", callbackEvent: callbackEvent })
+  function callbackEvent(event: object) {
+    console.log(event)
+  }
   const { displayComponent, Contoroler } = useDropdown({
-    children: <h1>salam</h1>,
-    animations: "scale"
+    children: <CreateLists callbackEvent={callbackEvent} inputData={Lists} />,
+    animations: "scale",
+    manualVisibility: (Object.keys(displayCurrent).length ? false : true)
   });
+  // useEffect(() => {
+
+  // })
   // () => {
   //   // handleVisiblity({
   //   //   dropdown: {

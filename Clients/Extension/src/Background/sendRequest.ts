@@ -6,7 +6,7 @@ export default function sendRequest(inputPage: inputPage, maxRetry = 2, delay = 
     };
     async function GetDataServer(inputPage: inputPage) {
         try {
-            return await fetch(pages[inputPage])
+            return (await fetch(pages[inputPage])).json()
         } catch (error) {
             throw new Error('Request failed');
         }

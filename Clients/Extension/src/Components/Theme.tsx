@@ -1,10 +1,10 @@
 import useCommonState from "@src/Hooks/useCommonState";
 
 export default function Theme() {
-  const [state,syncStateWithStorage] = useCommonState();
+  const [{ internal }, syncStateWithStorage] = useCommonState();
+  // console.log(internal)
   function handleTheme() {
-    // (state.internal.theme === "dark" ? "light" : "dark")
-    syncStateWithStorage("theme", "dark")
+    syncStateWithStorage("theme", (internal.theme === "dark" ? "light" : "dark"))
   }
   return (
     <div

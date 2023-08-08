@@ -3,19 +3,18 @@ import sendRequest from './sendRequest'
 const { runtime, tabs, proxy, storage } = chrome;
 
 async function SyncData() {
-  let finalResult = { internal: { theme: "light", language: {}, switchMode: false, premium: "", account: {}, timeAd: 0 }, external: {}, reload: 0 };
-  let result;
+  let finalResult = { internal: { theme: "light", language: {}, switchMode: false, premium: "", account: {}, timeAd: 0 }, external: {}, reload: 0 },
+    serverData = {};
   try {
-    result = await sendRequest("main");
-    console.log(result)
+    serverData = await sendRequest("main");
+    finalResult = { ...finalResult, external: { ...serverData } }
   } catch (error) {
     try {
-      result = await sendRequest("status");
-      console.log(result)
-    } catch (error) {
-
-    }
+      serverData = await sendRequest("status");
+      finalResult = { ...finalResult, external: { ...serverData } }
+    } catch (error) { }
   }
+  storage.local.set(finalResult);
 }
 // async function SyncData() {
 //   const Store = {
@@ -189,6 +188,7 @@ async function SyncData() {
 // });
 
 runtime.onStartup.addListener(() => {
+  proxy.settings.clear({ scope: "regular" })
   SyncData();
 });
 // //-------Oninstall Message to user
@@ -196,6 +196,8 @@ runtime.onInstalled.addListener(({ reason }) => {
   //disable all proxy for true and best work
   proxy.settings.clear({ scope: "regular" });
   if (reason === runtime.OnInstalledReason.INSTALL) {
+    proxy.settings.clear({ scope: "regular" })
+    SyncData();
     tabs.create({ url: "Welcome.html" });
     runtime.setUninstallURL("https://example.com/extension-survey");
   } else if (reason === runtime.OnInstalledReason.UPDATE) {
