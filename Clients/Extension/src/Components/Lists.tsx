@@ -3,10 +3,10 @@ export function CreateLists({ callbackEvent, inputData }: { callbackEvent: (inpu
     <ul className="overflow-y-scroll overflow-x-hidden h-full">
       {Object.entries(inputData).map(([key, value]) => {
         let { displayName, shorted } = value;
-        // onClick = {() => {callbackEvent(["", value[1]])}}
+        // 
         return (
           <li className="list-none flex gap-x-1 peer-checked:bg-red-600 cursor-pointer font-medium rounded-t-md p-2 hover:bg-gray-200"
-             >
+            onClick={() => { callbackEvent([displayName,[]]) }}>
             <img src={`/assets/icons/flags/${key}.png`} alt="Flag" className="w-6 h-6" loading="lazy" />
             <span className="mt-1">{displayName}</span>
             <img

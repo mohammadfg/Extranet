@@ -3,10 +3,11 @@ import type { Main } from "../Types/Global";
 const { storage } = chrome;
 export default function useCommonState(): [Main, (key: string, values: any) => void] {
     const [state, setState] = useState<Main>({});
-    function syncStateWithStorage(key: string, values: any) {
-        setState((latest) => ({ ...latest, ...{internal: { ...latest.internal, [key]: values }} }));
-        // console.log(state)
-      //  chrome.storage.local.set(state);
+    function syncStateWithStorage(key: string, callback: string | ((state: Main) => string)) {
+        setState((latest) => (
+            { ...latest, ...{ internal: { ...latest.internal, [key]: (typeof callback === 'function' ? callback(latest.internal) : callback) } } }
+        ));
+        //  chrome.storage.local.set(state);
     }
     useEffect(() => {
         // storage.local.get((items) => { setState(items) });

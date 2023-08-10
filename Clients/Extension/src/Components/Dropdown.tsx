@@ -1,10 +1,6 @@
-import type { Props } from "../Types/Global";
-interface Dropdown extends Props {
-    visibility: boolean;
-    animations: "slide" | "scale";
-    callbackEvent: (input: object) => void;
-}
-export default function Dorpdown({ visibility, animations, children, callbackEvent }: Dropdown) {
+import type { Dropdown } from "../Types/Global";
+
+export default function Dorpdown({ visibility, animations = "scale", children, callbackEvent, closer = true }: Dropdown) {
     const selfData = {
         animations: {
             slide: {
@@ -27,15 +23,17 @@ export default function Dorpdown({ visibility, animations, children, callbackEve
                     : selfData.animations[animations].Down)
             }
         >
-            <button
-                className="text-red-700 p-2 pb-0 text-2xl font-medium"
-                onClick={() => {
-                    // callbackEvent({ visibility: false });
-                    callbackEvent({ visibility: false });
-                }}
-            >
-                X
-            </button>
+            {
+                closer ?? (<button
+                    className="text-red-700 p-2 pb-0 text-2xl font-medium"
+                    onClick={() => {
+                        // callbackEvent({ visibility: false });
+                        callbackEvent({ visibility: false });
+                    }}
+                >
+                    X
+                </button>)
+            }
             {children}
         </div>
     );

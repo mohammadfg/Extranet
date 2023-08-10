@@ -16,8 +16,8 @@ export default function Language({ displayCurrent, Lists }: { displayCurrent: ob
   }
   const { displayComponent, Contoroler } = useDropdown({
     children: <CreateLists callbackEvent={callbackEvent} inputData={Lists} />,
-    animations: "scale",
-    manualVisibility: (Object.keys(displayCurrent).length ? false : true)
+    manualVisibility: (Object.keys(displayCurrent).length ? false : true),
+    closer: (Object.keys(displayCurrent).length ? true : false)
   });
   // useEffect(() => {
 
