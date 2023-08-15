@@ -12,11 +12,10 @@ export default function Language({ displayCurrent, Lists }: { displayCurrent: ob
   // }
   // const listlanguage = useDorpdown({ visibility: SwitchData.visibility, children: <h1>salam</h1>, animations: "scale", callbackEvent: callbackEvent })
   const displayCurrentChecker = Object.keys(displayCurrent).length;
-  function callbackEvent(event: object) {
-    chrome.runtime.sendMessage({ message: "setLanguage", data :""}, (response) => {
-
+  function callbackEvent([name]: Array<string | object>) {
+    chrome.runtime.sendMessage({ title: "setLanguage", data: name }, (response) => {
+      console.log("response", response)
     })
-    console.log(event)
   }
   const { displayComponent, Contoroler } = useDropdown({
     children: <CreateLists callbackEvent={callbackEvent} inputData={Lists} />,

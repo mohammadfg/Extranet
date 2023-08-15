@@ -4,15 +4,11 @@ export interface Advertising {
   location: string;
   showtime: number;
   expire: number;
+  message: string;
   tpye: "banner" | "poster";
   visibility: boolean;
 }
-export default function Advertising({
-  image_url,
-  target_url,
-  tpye,
-  visibility,
-}: Advertising) {
+export default function Advertising({ image_url, target_url, tpye, visibility, message }: Advertising) {
   function handleAd() { }
   if (tpye === "banner" && visibility) {
     return (
@@ -33,7 +29,7 @@ export default function Advertising({
           href={target_url}
           target="_blank"
         >
-          🌐 رفتن به صفحه موردنظر
+          {message}
         </a>
       </div>
     );

@@ -1,6 +1,7 @@
 import type { Dropdown } from "../Types/Global";
 
 export default function Dorpdown({ visibility, animations = "scale", children, callbackEvent, closer = true }: Dropdown) {
+   // why in this place we don't use state ?
     const selfData = {
         animations: {
             slide: {

@@ -1,6 +1,14 @@
 // //import { Icon, Storage, Tab_get, URI } from "./module";
 import sendRequest from './sendRequest'
 const { runtime, tabs, proxy, storage } = chrome;
+let root = "http://127.0.0.1:5500/Server/", pages = {
+  main: root + "main.json",
+  status: root + "status.json",
+  languages: (path: string) => root + "languages" + path + ".json",
+  install: root + "welcome",
+  uninstall: root + "uninstall",
+  update: root + "update"
+};
 
 async function SyncData() {
   let finalResult = { internal: { theme: "light", language: {}, switchMode: false, account: { premium: "" }, timeAd: 0, reload: 0 }, external: {} },
@@ -152,9 +160,11 @@ async function SyncData() {
 //   }
 // });
 
-runtime.onMessage.addListener((Message: { message: string, data: any }, Sender, sendResponse) => {
-  if (Message.message === "setLanguage") {
-    sendRequest("languages", "fa").then((res) => sendResponse(res)).catch(() => sendResponse({}))
+runtime.onMessage.addListener((Message: { title: string, data: any }, Sender, sendResponse) => {
+  if (Message.title === "setLanguage") {
+     sendRequest(pages.languages("fa")).then((res) => sendResponse(res)).catch(() => sendResponse({}))
+    // console.log(Message)
+    // sendResponse("ok")
   }
   // sender.id == chrome.runtime.id &&
   //  console.log(msg)
@@ -199,11 +209,11 @@ runtime.onInstalled.addListener(({ reason }) => {
   //disable all proxy for true and best work
   proxy.settings.clear({ scope: "regular" });
   if (reason === runtime.OnInstalledReason.INSTALL) {
-    proxy.settings.clear({ scope: "regular" })
+    // proxy.settings.clear({ scope: "regular" })
     SyncData();
-    tabs.create({ url: "Welcome.html" });
-    runtime.setUninstallURL("https://example.com/extension-survey");
+    tabs.create({ url: pages.install });
+    runtime.setUninstallURL(pages.uninstall);
   } else if (reason === runtime.OnInstalledReason.UPDATE) {
-    tabs.create({ url: "WhatsNew.html" });
+    tabs.create({ url: pages.update });
   }
 });

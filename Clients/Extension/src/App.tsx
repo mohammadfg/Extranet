@@ -7,7 +7,7 @@ import Footer from "./Components/Footer";
 import Switch from "./Components/Switch";
 // import { ContextContoroler } from "./Context/Main";
 // import type { Main } from "./Types/Global";
-import Loading from "./Components/Loading";
+// import Loading from "./Components/Loading";
 import useCommonState from "./Hooks/useCommonState";
 import "./style.css";
 // import test from "./test";
@@ -54,7 +54,7 @@ export default function App() {
             </div>
         );
     } else {
-        return (<Loading />)
+        return (<></>)
     }
 }
 

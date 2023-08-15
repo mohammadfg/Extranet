@@ -4,8 +4,8 @@
   "author": "MohamaadFg",
   "type": "module",
   "scripts": {
-    "dev": "nodemon",
-    "watch": "vite",
+    "dev": "vite",
+    "watch": "nodemon",
     "build": "vite build",
     "preview": "vite preview"
   },
