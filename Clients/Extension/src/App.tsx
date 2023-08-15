@@ -7,9 +7,9 @@ import Footer from "./Components/Footer";
 import Switch from "./Components/Switch";
 // import { ContextContoroler } from "./Context/Main";
 // import type { Main } from "./Types/Global";
-import "./style.css";
 import Loading from "./Components/Loading";
 import useCommonState from "./Hooks/useCommonState";
+import "./style.css";
 // import test from "./test";
 
 export default function App() {

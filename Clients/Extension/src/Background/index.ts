@@ -3,7 +3,7 @@ import sendRequest from './sendRequest'
 const { runtime, tabs, proxy, storage } = chrome;
 
 async function SyncData() {
-  let finalResult = { internal: { theme: "light", language: {}, switchMode: false, premium: "", account: {}, timeAd: 0 }, external: {}, reload: 0 },
+  let finalResult = { internal: { theme: "light", language: {}, switchMode: false, account: { premium: "" }, timeAd: 0, reload: 0 }, external: {} },
     serverData = {};
   try {
     serverData = await sendRequest("main");
@@ -152,40 +152,43 @@ async function SyncData() {
 //   }
 // });
 
-// runtime.onMessage.addListener((msg, sender, sendResponse) => {
-//   // sender.id == chrome.runtime.id &&
-//   //  console.log(msg)
-//   Storage().then((stage) => {
-//     if (msg.mesage == "check") {
-//       // if (Object.keys(stage).length == 0) {
-//       //   CheckParts((backdata) => {
-//       //     sendResponse(backdata);
-//       //   });
-//       // } else {
-//       sendResponse(stage);
-//       //------- update data Contorols after 45 Min
-//       let time = new Date().getTime();
-//       if (time > stage.contorols.timeRl) {
-//         CheckParts();
-//       }
-//       // }
-//     } else if (msg.mesage == "update") {
-//       //--------Set state from Page
-//       if (Object.hasOwn(msg, "contorols") || Object.hasOwn(msg, "state")) {
-//         // Get name elements
-//         stage = {
-//           ...stage,
-//           ...msg.state,
-//           contorols: { ...stage.contorols, ...msg.contorols },
-//         };
-//       }
+runtime.onMessage.addListener((Message: { message: string, data: any }, Sender, sendResponse) => {
+  if (Message.message === "setLanguage") {
+    sendRequest("languages", "fa").then((res) => sendResponse(res)).catch(() => sendResponse({}))
+  }
+  // sender.id == chrome.runtime.id &&
+  //  console.log(msg)
+  // Storage().then((stage) => {
+  //   if (msg.mesage == "check") {
+  //     // if (Object.keys(stage).length == 0) {
+  //     //   CheckParts((backdata) => {
+  //     //     sendResponse(backdata);
+  //     //   });
+  //     // } else {
+  //     sendResponse(stage);
+  //     //------- update data Contorols after 45 Min
+  //     let time = new Date().getTime();
+  //     if (time > stage.contorols.timeRl) {
+  //       CheckParts();
+  //     }
+  //     // }
+  //   } else if (msg.mesage == "update") {
+  //     //--------Set state from Page
+  //     if (Object.hasOwn(msg, "contorols") || Object.hasOwn(msg, "state")) {
+  //       // Get name elements
+  //       stage = {
+  //         ...stage,
+  //         ...msg.state,
+  //         contorols: { ...stage.contorols, ...msg.contorols },
+  //       };
+  //     }
 
-//       Storage("set", stage);
-//     }
-//   });
+  //     Storage("set", stage);
+  //   }
+  // });
 
-//   return true;
-// });
+  return true;
+});
 
 runtime.onStartup.addListener(() => {
   proxy.settings.clear({ scope: "regular" })
