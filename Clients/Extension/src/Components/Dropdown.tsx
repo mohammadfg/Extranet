@@ -1,7 +1,7 @@
 import type { Dropdown } from "../Types/Global";
 
 export default function Dorpdown({ visibility, animations = "scale", children, callbackEvent, closer = true }: Dropdown) {
-   // why in this place we don't use state ?
+    // why in this place we don't use state ?
     const selfData = {
         animations: {
             slide: {
@@ -25,11 +25,11 @@ export default function Dorpdown({ visibility, animations = "scale", children, c
             }
         >
             {
-                closer ?? (<button
+                closer && (<button
                     className="text-red-700 p-2 pb-0 text-2xl font-medium"
                     onClick={() => {
                         // callbackEvent({ visibility: false });
-                        callbackEvent({ visibility: false });
+                        callbackEvent(false);
                     }}
                 >
                     X

@@ -3,7 +3,7 @@ import type { Main } from "../Types/Global";
 const { storage } = chrome;
 export default function useCommonState(): [Main, (key: string, values: any) => void] {
     const [state, setState] = useState<Main>({});
-    function syncStateWithStorage(key: string, callback: string | ((state: Main) => string)) {
+    function syncStateWithStorage(key: string, callback: any | ((state: Main) => string)) {
         setState((latest) => (
             { ...latest, ...{ internal: { ...latest.internal, [key]: (typeof callback === 'function' ? callback(latest.internal) : callback) } } }
         ));
@@ -57,8 +57,6 @@ export default function useCommonState(): [Main, (key: string, values: any) => v
                 "reload": 0
             })
         }, 500);
-        console.log("handle")
-
     }, []);
     return [state, syncStateWithStorage];
 }

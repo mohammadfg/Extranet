@@ -4,7 +4,7 @@ const { runtime, tabs, proxy, storage } = chrome;
 let root = "http://127.0.0.1:5500/Server/", pages = {
   main: root + "main.json",
   status: root + "status.json",
-  languages: (path: string) => root + "languages" + path + ".json",
+  languages: (path: string) => root + "languages/" + path + ".json",
   install: root + "welcome",
   uninstall: root + "uninstall",
   update: root + "update"
@@ -162,9 +162,7 @@ async function SyncData() {
 
 runtime.onMessage.addListener((Message: { title: string, data: any }, Sender, sendResponse) => {
   if (Message.title === "setLanguage") {
-     sendRequest(pages.languages("fa")).then((res) => sendResponse(res)).catch(() => sendResponse({}))
-    // console.log(Message)
-    // sendResponse("ok")
+   sendRequest(pages.languages("fa")).then((res) => sendResponse(res)).catch(() => sendResponse({}))
   }
   // sender.id == chrome.runtime.id &&
   //  console.log(msg)

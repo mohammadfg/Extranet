@@ -1,55 +1,53 @@
-// import { useContext } from "preact/hooks";
+// import { useState } from "preact/hooks";
 import useDropdown from "../Hooks/useDropdown";
 import { CreateLists } from "./Lists";
 
-// import { Context } from "../Context/Main";
-export default function Language({ displayCurrent, Lists }: { displayCurrent: object, Lists: object }) {
-  // const { handleVisiblity = () => null } = useContext(Context);
-  // const [SwitchData, setSwitchData] = useState({ visibility: false });
-  // function callbackEvent(event: object) {
-  //   console.log(event)
-  //   setSwitchData((lts) => ({ ...lts, ...event }));
-  // }
-  // const listlanguage = useDorpdown({ visibility: SwitchData.visibility, children: <h1>salam</h1>, animations: "scale", callbackEvent: callbackEvent })
-  const displayCurrentChecker = Object.keys(displayCurrent).length;
-  function callbackEvent([name]: Array<string | object>) {
-    chrome.runtime.sendMessage({ title: "setLanguage", data: name }, (response) => {
-      console.log("response", response)
-    })
-  }
-  const { displayComponent, Contoroler } = useDropdown({
-    children: <CreateLists callbackEvent={callbackEvent} inputData={Lists} />,
-    manualVisibility: (displayCurrentChecker ? false : true),
-    closer: (displayCurrentChecker ? true : false)
-  });
-  // useEffect(() => {
+export default function Language({ list, handleLanguage }: { list: { ext: object, int: any }, handleLanguage: (key: string, callback: any | ((state: object) => string)) => void }) {
 
-  // })
-  // () => {
-  //   // handleVisiblity({
-  //   //   dropdown: {
-  //   //     dataSheet: {
-  //   //       ir: { displayName: "فارسی - ایران", rtl: true, language: "fa" },
-  //   //       us: {
-  //   //         displayName: "English - United States",
-  //   //         rtl: false,
-  //   //         language: "en",
-  //   //       },
-  //   //     },
-  //   //     visibility: true,
-  //   //   },
-  //   // });
-  //   // setSwitchData({ visibility: true }) 
-  // }
+  const displayCurrentChecker = Object.keys(list.int).length;
+
+  function callbackEvent([name]: Array<string | object>) {
+    // chrome.runtime.sendMessage({ title: "setLanguage", data: name }, (response) => {
+    //   handleLanguage("language", response)
+    // })
+    handleLanguage("language", {
+      "advertising": {
+        "message": "رفتن به صفحه مورد نظر"
+      },
+      "header": {
+        "account": "مهمان"
+      },
+      "switch": {
+        "ip": "آیپی",
+        "type": "نوع"
+      },
+      "country": {
+        "us": "آمریکا"
+      },
+      "toggles": {
+        "toggle1": "نمایش ترافیک مصرفی سایت ها",
+        "toggle2": "هشدار سایت های کلاهبرداری"
+      },
+      "errors": {},
+      "name": "فارسی",
+      "rtl": true
+    })
+    handleDropdown(false)
+  }
+  const { displayComponent, handleDropdown } = useDropdown({
+    children: <CreateLists callbackEvent={callbackEvent} inputData={list.ext} />,
+    manualVisibility: (Object.keys(list.int).length ? false : true),
+    closer: (Object.keys(list.int).length ? true : false)
+  });
   return (
     <>
       <button
-        onClick={Contoroler}
+        onClick={() => { handleDropdown(true) }}
         className="w-14 bg-gray-100 dark:bg-slate-400 rounded-b-md ml-1"
       >
         <span class="text-xs">
-          <img src="./assets/icons/earth.svg" class="w-4 inline mr-1 mb-1" loading="lazy" />
-          EN
+          <img src="./assets/icons/earth.svg" class="w-4 inline ltr:mr-1 rtl:ml-1 mb-1" loading="lazy" />
+          {displayCurrentChecker && list.int?.name.substring(0, 2)}
         </span>
       </button>
       {displayComponent}

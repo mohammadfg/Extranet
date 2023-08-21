@@ -19,6 +19,6 @@ export interface Props {
 export interface Dropdown extends Props {
   visibility: boolean;
   animations?: "slide" | "scale";
-  callbackEvent: (input: object) => void;
+  callbackEvent: (input: boolean) => void;
   closer?: boolean
 }
