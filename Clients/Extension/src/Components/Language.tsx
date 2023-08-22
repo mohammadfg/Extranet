@@ -2,10 +2,16 @@
 import useDropdown from "../Hooks/useDropdown";
 import { CreateLists } from "./Lists";
 
-export default function Language({ list, handleLanguage }: { list: { ext: object, int: any }, handleLanguage: (key: string, callback: any | ((state: object) => string)) => void }) {
+export default function Language({ list, handleLanguage }: { list: { ext: { [key: string]: any }, int: any }, handleLanguage: (key: string, callback: any | ((state: object) => string)) => void }) {
 
   const displayCurrentChecker = Object.keys(list.int).length;
-
+  // Led ON
+  const customizedList = Object.assign({}, list.ext)
+  for (const key in customizedList) {
+    if (customizedList[key].displayName.includes(list.int.name)) {
+      customizedList[key].selected = true;
+    }
+  }
   function callbackEvent([name]: Array<string | object>) {
     // chrome.runtime.sendMessage({ title: "setLanguage", data: name }, (response) => {
     //   handleLanguage("language", response)
@@ -34,8 +40,9 @@ export default function Language({ list, handleLanguage }: { list: { ext: object
     })
     handleDropdown(false)
   }
+
   const { displayComponent, handleDropdown } = useDropdown({
-    children: <CreateLists callbackEvent={callbackEvent} inputData={list.ext} />,
+    children: <CreateLists callbackEvent={callbackEvent} inputData={{ ext: customizedList, int: {} }} />,
     manualVisibility: (Object.keys(list.int).length ? false : true),
     closer: (Object.keys(list.int).length ? true : false)
   });

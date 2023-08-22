@@ -19,7 +19,7 @@ export default function useCommonState(): [Main, (key: string, values: any) => v
                             "tpye": "poster|banner",
                             "image_url": "",
                             "target_url": "",
-                            "location": "ir",
+                            "location": "ir|us|global",
                             "showtime": 10000,
                             "expire": ""
                         }
@@ -34,11 +34,31 @@ export default function useCommonState(): [Main, (key: string, values: any) => v
                                 "password": "",
                                 "port": 9002,
                                 "type": "free"
+                            },
+                            {
+                                "scheme": "https",
+                                "host": "blade6.frankfurt-rack417.nodes.gen4.ninja",
+                                "location": "hesa",
+                                "username": "",
+                                "password": "",
+                                "port": 9002,
+                                "type": "free"
+                            }
+                        ],
+                        "ir": [
+                            {
+                                "scheme": "https",
+                                "host": "blade6.frankfurt-rack417.nodes.gen4.ninja",
+                                "location": "hesa",
+                                "username": "",
+                                "password": "",
+                                "port": 9002,
+                                "type": "free"
                             }
                         ]
                     },
                     "languages": {
-                        "us": { "displayName": "English - United State", "shorted": "en" },
+                        "us": { "displayName": "English - United States", "shorted": "en" },
                         "ir": { "displayName": "فارسی - ایران", "shorted": "fa" }
                     },
                     "premium": [],

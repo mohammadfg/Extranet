@@ -3,18 +3,22 @@ import { useState } from "preact/hooks";
 // import { Context } from "../Context/Main";
 import useDropdown from "../Hooks/useDropdown";
 import { CreateLists } from "./Lists";
-export default function Switch({ handleSwitch }: { handleSwitch: () => void }) {
+export default function Switch({ data, handleSwitch }: { data: { ext: { [key: string]: any }, int: any }, handleSwitch: () => void }) {
   // const { handleVisiblity = () => null } = useContext(Context);
-  // function callbackEvent(event: object) {
-  //   console.log(event)
+  // Led ON
+  // const customizedList = Object.assign({}, data.ext)
+  // for (const key in customizedList) {
+  //   if (customizedList[key].displayName.includes(data.int.name)) {
+  //     customizedList[key].selected = true;
+  //   }
   // }
-  // const { displayComponent, handleDropdown } = useDropdown({
-  //   children: <CreateLists callbackEvent={callbackEvent} inputData={{
-  //     "us": { "displayName": "English - United State", "shorted": "en" },
-  //     "ir": { "displayName": "فارسی - ایران", "shorted": "fa" }
-  //   }} />,
-  //   animations: "slide"
-  // });
+  function callbackEvent(event: object) {
+    console.log(event)
+  }
+  const { displayComponent, handleDropdown } = useDropdown({
+    children: <CreateLists callbackEvent={callbackEvent} inputData={data} />,
+    animations: "slide"
+  });
   return (
     <>
       <div className="flex after:last:gap-2 justify-center mt-5">
@@ -33,7 +37,7 @@ export default function Switch({ handleSwitch }: { handleSwitch: () => void }) {
         </div>
       </div>
       <button
-        // onClick={handleDropdown}
+        onClick={() => { handleDropdown(true) }}
         className="bg-gray-100 rounded-md px-2 pt-1 w-24 justify-self-center mt-1"
       >
         <img
@@ -44,7 +48,7 @@ export default function Switch({ handleSwitch }: { handleSwitch: () => void }) {
         />
         IRAN
       </button>
-      {/* {displayComponent} */}
+      {displayComponent}
     </>
   );
 }

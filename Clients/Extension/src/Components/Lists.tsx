@@ -1,24 +1,28 @@
-function findName() {
 
-}
-export function CreateLists({ callbackEvent, inputData }: { callbackEvent: (input: Array<string | object>) => void, inputData: object }) {
+export function CreateLists({ callbackEvent, inputData }: { callbackEvent: (input: Array<string | object>) => void, inputData: { [key: string]: any } }) {
+  function findName([name, object]: [string, object]) {
+    console.log(name)
+    console.log(object)
+    return { displayName: inputData.int.language.country[name], shorted: null }
+  }
+  console.log(inputData)
   return (
     <ul className="overflow-y-scroll overflow-x-hidden h-full">
-      {Object.entries(inputData).map(([key, value]) => {
-        let { displayName, shorted } = Array.isArray(value) ? true : value;
+      {Object.entries(inputData.ext).map(([key, value]) => {
+        let { displayName, shorted } = Array.isArray(value) ? findName([key, value]) : value;
         if (Object.prototype.toString.call(value) === '[object Object]' || (Array.isArray(value) && value.length === 1)) {
           return (
             <li className="list-none flex gap-x-1 peer-checked:bg-red-600 cursor-pointer font-medium rounded-t-md p-2 hover:bg-gray-200"
               onClick={() => { callbackEvent([shorted, {}]) }}>
               <img src={`/assets/icons/flags/${key}.png`} alt="Flag" className="w-6 h-6" loading="lazy" />
               <span className="mt-1">{displayName}</span>
-              <img
+              {value.premium && <img
                 src="/assets/icons/premium.png"
                 alt="Flag"
                 className="w-6 h-6 ltr:ml-auto rtl:mr-auto"
                 loading="lazy"
-              />
-              <input type="radio" className="w-6" name="radio" disabled />
+              />}
+              {value.selected && <input type="radio" className="w-6" name="radio" checked />}
             </li>
           )
         } else {
@@ -31,7 +35,7 @@ export function CreateLists({ callbackEvent, inputData }: { callbackEvent: (inpu
                   className="w-6 h-6"
                   loading="lazy"
                 />
-                <span className="mt-1">displayName</span>
+                <span className="mt-1">{displayName}</span>
                 <img
                   src="/assets/icons/flags/us.png"
                   alt="Flag"
@@ -55,7 +59,13 @@ export function CreateLists({ callbackEvent, inputData }: { callbackEvent: (inpu
                     >
                       155ms
                     </span>
-                    <input type="radio" className="w-6" name="radio" disabled />
+                    {value.premium && <img
+                      src="/assets/icons/premium.png"
+                      alt="Flag"
+                      className="w-6 h-6 ltr:ml-auto rtl:mr-auto"
+                      loading="lazy"
+                    />}
+                    {value.selected && <input type="radio" className="w-6" name="radio" checked />}
                   </li>
                 </button>
               </ul>
