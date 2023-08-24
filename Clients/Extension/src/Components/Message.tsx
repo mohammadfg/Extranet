@@ -1,23 +1,16 @@
 import Lottie from 'react-lottie-player/dist/LottiePlayerLight'
 import error from '../assets/animations/Error.json'
-// export function Loading({ message = "" }: { message?: string }) {
-//     return (
-//         <div className="w-72 h-72 grid place-items-center bg-[#000000e3]">
-//             <img src="./assets/icons/wait_32.gif" alt="Loading ..." loading="lazy" />
-//             <h3 className="text-white">{message}</h3>
-//         </div>
-//     );
-// }
-export default function Error({ message }: { message: string }) {
+import loading from '../assets/animations/loading.json'
+export default function Message({ message = "", anime = "loading" }: { message: string, anime: "loading" | "error" }) {
     const animations = {
-        loading: "",
-        error: ""
+        loading: loading,
+        error: error
     }
     return (
         <div className="text-center">
             <Lottie
                 loop
-                animationData={error}
+                animationData={animations[anime]}
                 play
                 style={{ width: "100%", height: 150 }}
             />

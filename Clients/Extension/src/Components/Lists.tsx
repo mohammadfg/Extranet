@@ -1,11 +1,8 @@
 
 export function CreateLists({ callbackEvent, inputData }: { callbackEvent: (input: Array<string | object>) => void, inputData: { [key: string]: any } }) {
   function findName([name, object]: [string, object]) {
-    console.log(name)
-    console.log(object)
     return { displayName: inputData.int.language.country[name], shorted: null }
   }
-  console.log(inputData)
   return (
     <ul className="overflow-y-scroll overflow-x-hidden h-full">
       {Object.entries(inputData.ext).map(([key, value]) => {

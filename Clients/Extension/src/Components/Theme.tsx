@@ -1,7 +1,4 @@
-import useCommonState from "@src/Hooks/useCommonState";
-import type { Main } from "../Types/Global";
-
-export default function Theme({ handleTheme }: { handleTheme: (key: string, values: string | ((state: Main) => string)) => void }) {
+export default function Theme({ handleTheme }: { handleTheme: (key: string, values: string | ((state: { [key: string]: any }) => any)) => void }) {
   // console.log(internal)
   //handleTheme("theme", (internal.theme === "dark" ? "light" : "dark"))
   return (
